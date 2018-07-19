@@ -1,3 +1,4 @@
+matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/'
 
 load(fullfile(matroot, 'controlSpecs.mat'));
 load(fullfile(matroot, 'specSpontPC.mat'));
