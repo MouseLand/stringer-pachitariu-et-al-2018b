@@ -1,10 +1,10 @@
-clear all;
+% decode responses to 2800 natural images from one repeat
+% decoder correlates responses on first half to second half
+% stimulus that is most correlated is the decoded stimulus "imax"
+% decoding accuracy is probability that "imax" is true stimulus
+function decode2800(matroot)
 
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp/';
-
-
-load(fullfile(dataroot,'natimg2800Proc.mat'));
+load(fullfile(matroot,'natimg2800_proc.mat'));
 
 %%
 

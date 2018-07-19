@@ -1,23 +1,16 @@
-% compute all stats
-
-clear all;
-
-useGPU   = 1;
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp/';
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';        
+% compute cross-validated PCs and signal variance and SNR and
+% responsiveness
+function statsShuffledPCA(dataroot, matroot, useGPU)
 
 load(fullfile(dataroot,'dbstims.mat'));
 
-stimset={'natimg2800','white2800','natimg2800_8D','natimg2800_4D','natimg2800_small','ori'};
 %%
 nstims = 2800;
 
-%clear Vx specS ccdims ccrank pval
 clf;
-%clear p;
 for K = 1:6
     clf;
-    load(fullfile(dataroot,sprintf('%sProc.mat',stimset{K})));
+    load(fullfile(dataroot,sprintf('%s_proc.mat',stimset{K})));
     %%
     for k = 1:numel(find(stype==K))
         A = respAll{k};
@@ -57,5 +50,5 @@ for K = 1:6
 end
 
 %%
-save(fullfile(matroot,'eigsAllStats.mat'), 'specS','Vx','alpha','snr','mresp')
+save(fullfile(matroot,'eigs_and_stats_all.mat'), 'specS','Vx','alpha','snr','mresp')
  

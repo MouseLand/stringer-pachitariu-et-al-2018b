@@ -1,5 +1,3 @@
-% treat responses to 32 natural images repeated 96 times as 32*48 images
-% repeated twice, and compute the cross-validated PCs
 function natimg32PCA(dataroot, matroot, useGPU)
 
 load(fullfile(dataroot,'dbstims.mat'));
@@ -58,10 +56,12 @@ for k = 1:numel(iexp)
     Fs0 = (Fs0 - mu)./sd;
 	if useGPU
 		Fs0 = gpuArray(single(Fs0));
+		
+		
+	else
+		[~, ~, Vspont] = svdecon(single(Fs0));
 	end
-	[~, ~, Vspont] = svdecon(single(Fs0));
 	Vspont = gather_try(Vspont);
-	
 	for i = 1:2
         A(:,:,i)  = A(:,:,i) - (A(:,:,i) * Vspont(:,1:nPCspont)) * Vspont(:,1:nPCspont)';
     end

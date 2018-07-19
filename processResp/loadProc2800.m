@@ -1,4 +1,4 @@
-function [respBz, istim] = loadProc2800(stim, nPCspont, keepNAN)
+function [respBz, istim] = loadProc2800(stim, nPCspont, keepNAN, useGPU)
 
 resp0   = stim.resp(stim.istim<max(stim.istim), :);
 resp0(isnan(resp0)) = 0;
@@ -19,8 +19,11 @@ if nPCspont > 0 && ~isempty(stim.spont)
     Fs0 = stim.spont;
     Fs0 = (Fs0 - mu)./sd;
     %Fs0 = my_conv2(Fs0, 1, 1);
-    [~, ~, Vspont] = svdecon(gpuArray(single(Fs0)));
-    Vspont = gather(Vspont(:, 1:nPCspont));
+	if useGPU
+		Fs0 = gpuArray(single(Fs0));
+	end
+    [~, ~, Vspont] = svdecon(single(Fs0));
+    Vspont = gather_try(Vspont(:, 1:nPCspont));
     resp0 = resp0 - (resp0 * Vspont) * Vspont';
 end
 

@@ -1,20 +1,14 @@
-clear all;
-
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults';
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp';
-
-addpath('/media/carsen/DATA1/2P/dbfiles');
-compile_dbs;
+function fig1(dataroot, matroot)
 
 load(fullfile(dataroot,'images_natimg2800_all.mat'));
-load(fullfile(dataroot,'natimg2800Proc.mat'));
+load(fullfile(matroot,'natimg2800_proc.mat'));
 
-load(fullfile(matroot,'eigsAllStats.mat'));
+load(fullfile(matroot,'eigs_and_stats_all.mat'));
 load(fullfile(matroot,'natimg32_reps.mat'));
 load(fullfile(matroot, 'decoder2800.mat'));
 
-lr = load(fullfile(matroot,'RFlowrank.mat'));
-gb = load(fullfile(matroot,'gaborFits.mat'));
+lr = load(fullfile(matroot,'lowrank_fits.mat'));
+gb = load(fullfile(matroot,'gabor_fits.mat'));
 
 vexpALL = Vx{1};
 
