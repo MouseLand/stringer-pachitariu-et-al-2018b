@@ -235,13 +235,13 @@ for ij = 1:2
                     fnan = nfrac(j)*d.NumNeur(k);
                 end
             end
-            trange0 = 11:max(12,min(500, (round(fnan*.55))));
+            trange0 = 11:max(12,min(500, (round(fnan*.75))));
             [p(j,k), ypred, b(j,k), r(j,k)] = get_powerlaw(ss, trange0);
-            tplot = round(min(fnan*.75, numel(ss)));
+            tplot = round(min(fnan*.75), numel(ss)));
             sA(1:tplot,k) = ss(1:tplot)/nansum(ss(1:tplot));
             %fmax = min(tplot, fmax);
         end
-        loglog(nanmean(sA(1:tplot,:),2), 'Color', col(j,:));
+        loglog(nanmean(sA,2), 'Color', col(j,:));
         hold all;
         
         text(1.04, 1.32-(j-1)*.1, sprintf('%2.3f', nfrac(j)), 'HorizontalAlign', 'right', ...
@@ -295,7 +295,7 @@ for kt = 1:2
         ylim([.4 1.05]);
     else
         ylabel({'power law','exponent'});
-        ylim([.5 1.5]);
+        ylim([.25 1.5]);
     end
     xlabel({'fraction of','neurons/stimuli'});
     axis square;

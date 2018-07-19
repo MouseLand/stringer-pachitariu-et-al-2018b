@@ -97,14 +97,8 @@ for k = 1:5
     
     loglog(s(1:end-1)/sum(s(1:end-1)),'k');
     hold all;
-    for j = 100:-1:1
-		if k == 2
-			plot(exp(((j-1)+1)/10),1/1000,'.','color',cs(j,:),'markersize',10)
-		elseif k==1
-			plot(j,s(j)/sum(s(1:end-1)),'.','color','k','markersize',10)
-		else
-			plot(j,s(j)/sum(s(1:end-1)),'.','color',cs(j,:),'markersize',10)
-		end
+    for j = 500:-1:1
+        plot(j,s(j)/sum(s(1:end-1)),'.','color',cs(j,:),'markersize',10)
     end
     axis tight;
     box off;
@@ -134,7 +128,7 @@ for k = 1:5
         hp.Position(2) = hp.Position(2)+.03;
     end
     
-    plot3(wproj(1,1:2:end),wproj(2,1:2:end),zeros(1,ceil(np/2)),'color',.7*[1 1 1],'linewidth',.25);
+    plot3(wproj(1,1:2:end),wproj(2,1:2:end),zeros(1,np/2),'color',.7*[1 1 1],'linewidth',.5);
     hold all;
     plot3(wproj(1,1:2:end),wproj(2,1:2:end),wproj(3,1:2:end)-min(wproj(3,1:2:end)),'k','linewidth',.5);
     grid on;
@@ -162,7 +156,7 @@ for j = 1:length(hs)
 end
 
 %%
-print('fig/fig4.pdf','-dpdf');
+print('figs/fig4.pdf','-dpdf');
 
 
 

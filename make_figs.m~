@@ -12,6 +12,5 @@ fig2(dataroot, matroot);
 %% makes fig3
 fig3(dataroot, matroot);
 
-%% makes fig4 (relies on saved structure from fig3 (matroot/alphas.mat)!)
-fig4(matroot);
-
+%% makes fig4
+fig4(dataroot,

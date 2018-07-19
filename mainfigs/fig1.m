@@ -219,7 +219,7 @@ for ii = 1:2
 				hc.Position(2) = h2.Position(2)+.0;
 				hc.Position(4) = .04;
 			else
-				text(.5, 1.1, {'classical RF model'}, 'verticalalignment', 'bottom', 'horizontalalignment', 'center','fontsize',8)
+				text(.5, 1.1, {'Gabor model'}, 'verticalalignment', 'bottom', 'horizontalalignment', 'center','fontsize',8)
 			end
 		end
 	end

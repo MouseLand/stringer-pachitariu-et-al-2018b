@@ -1,15 +1,10 @@
-% plot all stats fig3
-clear all;
+function fig3(dataroot,matroot)
 
-% datapath
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp';
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
-
-%%
-
-neur = load(fullfile(matroot,'eigsAllStats.mat'));
-gabor = load(fullfile(matroot,'gaborCSfits2natimg.mat'));
+neur = load(fullfile(matroot,'eigs_and_stats_all.mat'));
+gabor = load(fullfile(matroot,'gabor_spectrum.mat'));
+% example images
 load(fullfile(dataroot,'allimgs.mat'));
+% sparse noise eigenvectors
 load(fullfile(dataroot,'sparseSTATS.mat'));
 neur.specS{7} = vALL;
 evs{6} = [1 1e-5*ones(1,99)];
@@ -20,12 +15,11 @@ oimg = oimg([150:249],[150:249]);
 img{6} = oimg;
 img{7} = ceil(rand(11,11) - .95) - ceil(rand(11,11) - .95);
 
-%%
+
 close all
 xf = 4.5;
 yf = 7;
 HF=default_figure([11 3 xf yf]);
-%%
 
 id = [1 2 5 7 3 4 6];
 
@@ -133,7 +127,7 @@ for K = 1:numel(id)
                 
             case 4
                 % same trange
-                lam     = gabor.specA{id(K)} / sum(gabor.specA{id(K)});
+                lam     = gabor.specS{id(K)} / sum(gabor.specS{id(K)});
                 %ss = my_conv2(ss, 1, 1);
                 ss = lam;
 			case 5
@@ -212,7 +206,7 @@ end
 save(fullfile(matroot, 'alphas.mat'),'alp','aall');
 
 %%
-print('../figs/fig3wgaborsnew.pdf','-dpdf');
+print('fig/fig3.pdf','-dpdf');
 
 
 

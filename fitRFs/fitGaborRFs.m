@@ -93,9 +93,17 @@ for k = 1:length(respAll)
 	
 	fprintf('natimg2800 gabor RF varexp (normalized): %0.3f\n', mean(vvr));
     
+	%% powerlaws
+	tpred = cat(2, respG, respGT);
+	tpred = tpred(vartest>.05,:);
+	[u s v] = svdecon(tpred - mean(tpred,2));
+	s = gather_try(s);
+	s = diag(s).^2;
+	
 	% compile gabor RF stats, cRF are RFs
 	[cRF, rfstats] = getGaborRFs(X, A, gbest, crat, [ybest xbest]);
 		
+	results.specS{k}   = s;
 	results.rfstats{k} = rfstats;
 	results.vtrain{k} = vartrain;
 	results.vtest{k} = vartest;

@@ -66,11 +66,9 @@ for K = 1:7
 	respG2 = max(0, respG2);
 	tpred  = cmax(:,1).*(respG1 - bmax(:,1)) + ...
 		cmax(:,2).*(respG2 - bmax(:,2));
-	tpred = gather(tpred);        
 	        
 	tpred = tpred(vtest>.05,:);
 	
-	whos tpred
 	[u s v] = svdecon(tpred - mean(tpred,2));
 	s = gather_try(s);
 	s = diag(s).^2;

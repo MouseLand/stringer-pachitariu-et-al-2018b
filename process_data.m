@@ -2,8 +2,9 @@
 dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp/';        
 % where processed data and results are saved
 matroot  = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
-
 useGPU = 1;
+
+%% SCRIPTS FOR MAIN ANALYSES AND FIGURES
 
 % compute two repeats from sequence of stimuli and response 
 % and subtracts spontaneous components
@@ -37,9 +38,21 @@ fitLowRankRFs(dataroot,matroot,useGPU);
 % saves in matroot/gabor_fits.mat
 fitGaborRFs(dataroot,matroot,useGPU);
 
-%% computes responses of gabor model to image stimuli fit to mouse which was
+% computes responses of gabor model to image stimuli fit to mouse which was
 % shown all 6 different image sets 
 % saves in matroot/gabor_spectrum.mat
 simGaborFits(dataroot, matroot, useGPU);
+
+% compute cross-validated PCs for varying numbers of neurons and stimuli
+% saves in matroot/eigs_incneurstim_X.mat where X is stimset
+incNeurStimPowerLaw(dataroot,matroot,useGPU);
+
+% simulations of powerlaw with various tuning curves
+fractalvmanifold(matroot)
+
+
+%% SCRIPTS FOR SUPPLEMENTARY FIGURES
+
+
 
 
