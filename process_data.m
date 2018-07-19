@@ -28,4 +28,5 @@ natimg32PCA(dataroot, matroot, useGPU);
 % saves in matroot/decoder2800.mat
 decode2800(matroot);
 
+%%
 

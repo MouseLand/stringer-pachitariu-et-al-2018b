@@ -36,6 +36,9 @@ for ip = 1:length(respAll)
         CC = corr(r10', r20');
         [~, imax] = max(CC, [], 1);
         pCorrect(k,ip) = nanmean(imax == [1:numel(imax)]);
+		if k == 1
+			fprintf('natimg2800 decoding accuracy: %0.3f\n',pCorrect(k,ip));
+		end
     end
     
 end

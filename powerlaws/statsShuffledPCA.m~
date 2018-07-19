@@ -10,7 +10,7 @@ nstims = 2800;
 clf;
 for K = 1:6
     clf;
-    load(fullfile(matroot,sprintf('%s_proc.mat',stimset{K})));
+    load(fullfile(dataroot,sprintf('%s_proc.mat',stimset{K})));
     %%
     for k = 1:numel(find(stype==K))
         A = respAll{k};
@@ -45,7 +45,7 @@ for K = 1:6
         drawnow;
        
         alpha{K}(k) = get_powerlaw(specS{K}{k}, [5:min(500,numel(ss)-2)]);
-        fprintf('%s stimvar: %0.3f power-law: %1.3f\n', stimset{K}, nanmean(Vexp), alpha{K}(k));
+        fprintf('%s stimvar: %0.3f power-law: %1.3f\n', stimtype{K}, nanmean(Vexp), alpha{K}(k));
 	end
 end
 

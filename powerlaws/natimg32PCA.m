@@ -51,7 +51,7 @@ for k = 1:numel(iexp)
     A1 = compute_means(istim, resp0, 2, 0);
 	% A1 is stims x neurons x 2 where stims is 33
     ccSTIM      = corr(A1(1:nStim, :,1), A1(1:nStim, :, 2));
-    fprintf('Trial-avg stimulus variance %2.2f\n', nanmean(diag(ccSTIM)))
+    fprintf('natimg32 trial-avg-stimvar: %2.2f\n', nanmean(diag(ccSTIM)))
             
 	% subtract spontaneous subspace
 	Fs0 = stim.spont;
