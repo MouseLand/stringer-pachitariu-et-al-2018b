@@ -185,7 +185,9 @@ grid minor;
 % ------------------------ RFS -------------------------------------------
 rng(12);
 nsp = 100;
+
 ineu = [isort(2:14)'];
+
 for ii = 1:2
 	for j = 1:size(ineu,1)
 		h2=my_subplot(24,4,(j-1)*4+(ii-1)+4*7+3,[.65 .73]);
@@ -207,17 +209,21 @@ for ii = 1:2
 			A = gbRF(:,:,ineu(j));
 			A = A / std(A(:));
 		end
-		imagesc(A(:,:), [-1 1]*7)
+		
+		imagesc(A(:,:), [-1 1]*7)%*10e-2)
 		hold all;
 		colormap(h2,rb)
 		axis off;
+		
 		if j==1
 			if ii==1
 				text(.5, 1.1, 'linear RF model', 'verticalalignment', 'bottom', 'horizontalalignment', 'center','fontsize',8)
-				hc=colorbar;
-				hc.Position(1) = .73;
-				hc.Position(2) = h2.Position(2)+.0;
-				hc.Position(4) = .04;
+				%if k==1
+					hc=colorbar;
+					hc.Position(1) = .73;
+					hc.Position(2) = h2.Position(2)+.0;
+					hc.Position(4) = .04;
+				%end
 			else
 				text(.5, 1.1, {'classical RF model'}, 'verticalalignment', 'bottom', 'horizontalalignment', 'center','fontsize',8)
 			end
@@ -251,7 +257,7 @@ hold all;
 plot(-45*[1 1], [-45 45],'k');
 plot(45*[1 1], [-45 45],'k');
 
-% ------------ TITLES AND LETTERS ----------------------------------
+
 ttl{1} = '';ttl{2} = '';
 ttl{3} = 'Example stimulus';
 ttl{4} = 'Stimulus sequence';
@@ -298,4 +304,7 @@ for j = 1:length(hs)
 	
 end
 
-print(HF,'fig/fig1.pdf','-dpdf');
+
+
+%%
+print(HF,'../figs/fig1.pdf','-dpdf');

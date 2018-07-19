@@ -138,9 +138,9 @@ for iy = 1:numel(yp)
         rGtest(vbetter,:)  = respTest;
         
     end
-    fprintf('RF Y %d done, %.2f sec, %1.3f train, %1.3f test\n',yp(iy),toc, nanmean(vartrain), nanmean(vartest));
+    %fprintf('RF Y %d done, %.2f sec, %1.3f train, %1.3f test\n',yp(iy),toc, nanmean(vartrain), nanmean(vartest));
 end
-fprintf('>>>>> %1.3f train variance, %1.3f test variance\n', nanmean(vartrain), nanmean(vartest));
+fprintf('>>> %1.3f train variance, %1.3f test variance\n', nanmean(vartrain), nanmean(vartest));
 
 
 

@@ -1,9 +1,5 @@
-clear all;
-
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp/';
-
-useGPU = 1;
+% fits natural image responses using low-rank model of RFs
+function fitLowRankRFs(dataroot, matroot, useGPU)
 
 % load images
 load(fullfile(dataroot, 'images_natimg2800_all.mat'));
@@ -12,13 +8,13 @@ imgs = imgs(:,:,:);
 [Ly, Lx, nimg] = size(imgs);
 
 % load neural responses
-load(fullfile(dataroot,sprintf('%sProc.mat','natimg2800')));
+load(fullfile(matroot,sprintf('%s_proc.mat','natimg2800')));
 
 %%
 for k = 1:length(respAll)
 	
 	%
-	respN=respAll{k};
+	respN  = respAll{k};
 	istimN = istimAll{k};
 	
 	% percent signal variance of each neuron 
@@ -32,11 +28,14 @@ for k = 1:length(respAll)
 	NN = size(Y,2);
 	
 	%% find the principal components of the responses
-	[A B C] = svdecon(gpuArray(single(Y)));
+	if useGPU 
+		Y = gpuArray(single(Y));
+	end
+	[A B C] = svdecon(single(Y));
 	% keep top 100 PCs of responses
 	nPC = 100;
 	V = A(:, 1:nPC) * B(1:nPC, 1:nPC);
-	V = gather(V);	% images x components
+	V = gather_try(V);	% images x components
 	
 	%% images that were shown in expt ip
 	X = (single(imgs(:,:,istimN)) - 128) / 64;
@@ -68,7 +67,7 @@ for k = 1:length(respAll)
 		nanmean(mean((V(rtrain, :)*C(:,1:nPC)').^2,1));
 	R2test  = 1 - nanmean(mean((Ypred(rtest, :) - Y(rtest,:)).^2,1))./...
 		nanmean(mean(Y(rtest,:).^2,1));
-	disp([R2train R2test])
+	%disp([R2train R2test])
 	varexp = R2test;
 	
 	vtest = 1 - mean((Ypred(rtest, :) - Y(rtest,:)).^2,1)  ./ mean(Y(rtest,:).^2,1);
@@ -83,7 +82,7 @@ for k = 1:length(respAll)
 	res2   = rtest2 - Ypred(rtest,:);
 	vvr = 1 - nansum(nansum(res1.*res2,1))/nansum(nansum(rtest1.*rtest2,1));
 	
-	disp(mean(vvr));
+	fprintf('natimg2800 low-rank RF varexp (normalized): %0.3f\n', mean(vvr));
 	
 	% plot best receptive fields
 	[~,ibest] = sort(vtest, 'descend');
@@ -93,8 +92,8 @@ for k = 1:length(respAll)
 		imagesc(cRF(:,:,ibest((j-1)*10+5)),[-1 1]*8);
 		axis image;
 	end
-	drawnow;
 	colormap(redblue)
+	drawnow;
 	
 	% save RF model
 	results.aAll{k}     = gather_try(a(:,1:nc));
@@ -107,7 +106,7 @@ for k = 1:length(respAll)
 end
 %%
 
-save(fullfile(matroot, 'RFlowrank.mat'), '-struct', 'results');
+save(fullfile(matroot, 'lowrank_fits.mat'), '-struct', 'results');
 
 
 

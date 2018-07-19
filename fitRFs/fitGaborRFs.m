@@ -1,12 +1,6 @@
 %%% computes Gabor fits to neural activity based on responses to
 %%% natimg2800, uses an additive model (simple + complex cell)
-
-clear all;
-
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp/';
-
-useGPU = 1;
+function fitGaborRFs(dataroot,matroot,useGPU)
 
 % load images
 load(fullfile(dataroot, 'images_natimg2800_all.mat'));
@@ -15,7 +9,7 @@ imgs = imgs(:,1:180,:);
 [Ly, Lx, nimg] = size(imgs);
 
 % load neural responses
-load(fullfile(dataroot,sprintf('%sProc.mat','natimg2800')));
+load(fullfile(matroot,sprintf('%s_proc.mat','natimg2800')));
 
 %%
 for k = 1:length(respAll)
@@ -97,7 +91,7 @@ for k = 1:length(respAll)
 	res2   = rtest2 - respGT';
 	vvr = 1 - nansum(nansum(res1.*res2,1))/nansum(nansum(rtest1.*rtest2,1));
 	
-	disp(mean(vvr));
+	fprintf('natimg2800 gabor RF varexp (normalized): %0.3f\n', mean(vvr));
     
 	% compile gabor RF stats, cRF are RFs
 	[cRF, rfstats] = getGaborRFs(X, A, gbest, crat, [ybest xbest]);
@@ -117,5 +111,5 @@ results.Ly = Ly;
 results.Lx = Lx;
 
 %%
-save(fullfile(matroot,'gaborFits.mat'),'-struct','results');
+save(fullfile(matroot,'gabor_fits.mat'),'-struct','results');
  

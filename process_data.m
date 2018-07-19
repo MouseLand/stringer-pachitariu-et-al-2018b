@@ -28,5 +28,18 @@ natimg32PCA(dataroot, matroot, useGPU);
 % saves in matroot/decoder2800.mat
 decode2800(matroot);
 
-%%
+% fits natural image responses using low-rank model of RFs
+% saves in matroot/lowrank_fits.mat
+fitLowRankRFs(dataroot,matroot,useGPU);
+
+% fits gabors to natural image responses
+% each cell is a simple + complex cell with fit scaling constants
+% saves in matroot/gabor_fits.mat
+fitGaborRFs(dataroot,matroot,useGPU);
+
+%% computes responses of gabor model to image stimuli fit to mouse which was
+% shown all 6 different image sets 
+% saves in matroot/gabor_spectrum.mat
+simGaborFits(dataroot, matroot, useGPU);
+
 
