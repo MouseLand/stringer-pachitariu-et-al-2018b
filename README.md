@@ -54,11 +54,11 @@ Each file is a different session with images given by "stimset" with mouse_name 
 ### Image files 
 
 All image files contain a matrix imgs which is 68 degrees by 270 degrees by number of images, where degrees represent degrees of the mouse's visual space. 
-- *images_natimg2800_all.mat*: The same natural images were shown to all mice.
-- *images_natimg2800_white_all.mat*: The same whitened natural images were shown to all mice.
-- *images_natimg2800_8D_mname_date.mat*: Images presented during recording natimg2800_8D_mname_date.mat 
-- *images_natimg2800_4D_mname_date.mat*: Images presented during recording natimg2800_4D_mname_date.mat 
-- *images_natimg2800_small_mname_date.mat*: Images presented during recording natimg2800_small_mname_date.mat 
+- **images_natimg2800_all.mat**: The same natural images were shown to all mice.
+- **images_natimg2800_white_all.mat**: The same whitened natural images were shown to all mice.
+- **images_natimg2800_8D_mname_date.mat**: Images presented during recording natimg2800_8D_mname_date.mat 
+- **images_natimg2800_4D_mname_date.mat**: Images presented during recording natimg2800_4D_mname_date.mat 
+- **images_natimg2800_small_mname_date.mat**: Images presented during recording natimg2800_small_mname_date.mat 
 
 Extra: sparseStats.mat are the powerlaws from sparse noise recordings; allimgs.mat contains example images from the images*.mat 
 
