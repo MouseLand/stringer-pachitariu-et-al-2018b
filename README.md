@@ -19,10 +19,19 @@ import numpy as np
 mt = sio.loadmat('natimg2800_M160825_MP027_2016-12-14.mat')
 
 ### stimulus responses
-spks = mt[‘Fsp’]                   # neurons by timepoints
+resp = mt[‘stim’][0]['resp'][0]    # stimuli by neurons
+istim = mt[‘stim’][0]['istim'][0]   # identities of stimuli in resp
+spont = mt[‘stim’][0]['spont'][0]  # timepoints by neurons
 
+### cell information
 med = mt[‘med’]                 # cell centers (X Y Z)
-# cell statistics
 mt[‘stat’][0]     # first cell’s stats
 mt[‘stat’][0][‘npix’]       # one example field, tells you how pixels make up the cell
+
+### loading images
+mt = sio.loadmat('images_natimg2800_all.mat')
+imgs = mt['imgs']  # 68 by 270 by number of images
+# check out first image
+plt.imshow(imgs[:,:,0])
+
 ```
