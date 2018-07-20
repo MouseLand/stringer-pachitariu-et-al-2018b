@@ -2,6 +2,7 @@
 Code to analyze recordings of 10,000 neurons in response to 2,800 natural images presented twice
 
 This code produces the figures from Stringer, Pachitariu et al, 2018b:
+
 Carsen Stringer, Marius Pachitariu, Nicholas Steinmetz, Matteo Carandini, Kenneth D. Harris. *High-dimensional geometry of population responses in visual cortex*
 
 It relies on data deposited on figshare at:
