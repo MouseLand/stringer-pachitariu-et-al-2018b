@@ -1,8 +1,6 @@
-clear all;
-
-% datapath
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp';
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
+% simulate random data with power-law eigenspectra and evaluate
+% cross-validated PCA analysis
+function suppfig_simdata(matroot)
 
 load(fullfile(matroot,'simSpectrum.mat'));
 
@@ -24,9 +22,9 @@ for k = 1:size(specSim,2)
     ss = specSim(:,k,4,ip0);
     loglog(ss / sum(ss),'color',cm(k,:));
     hold all;
-    text(.9,1-(k-1)*.12,[sprintf('%1.2f',nanmean(Vx(:,k,1,ip0)))],'color',cm(k,:),'fontsize',8,'HorizontalAlignment','right');
+    text(.9,1-(k-1)*.12,[sprintf('%1.0f',nanmean(100*Vx(:,k,1,ip0)))],'color',cm(k,:),'fontsize',8,'HorizontalAlignment','right');
 end
-text(.7,1,'stim variance: ','fontsize',8,'HorizontalAlignment','right');
+text(.7,1,'% stim variance: ','fontsize',8,'HorizontalAlignment','right');
 box off;
 grid on;
 grid minor;
@@ -47,19 +45,19 @@ for ip0 = 2
             asim(k,j) = get_powerlaw(specSim(:,k,j,ip0),[20:500]);
         end
         if k > 1
-            errorbar(nanmean(nanmean(Vx(:,k,:,ip0),1),3),nanmean(asim(k,:),2),nanstd(asim(k,:),1,2),...
+            errorbar(nanmean(nanmean(Vx(:,k,:,ip0)*100,1),3),nanmean(asim(k,:),2),nanstd(asim(k,:),1,2),...
                 '.','color',cm(k,:),'markersize',10,'linewidth',1.5);
         else
-            plot([0 .4],[1 1]*asim(1,1),'k');
+            plot([0 .4*100],[1 1]*asim(1,1),'k');
         end
     end
 end
 box off;
-xlabel('stim-related variance');
+xlabel('% stim-related variance');
 ylabel('power law exponent \alpha');
 axis square;
 ylim([0.97 1.03])
-set(gca,'xtick',[0:.1:.4]);
+set(gca,'xtick',[0:10:40]);
 
 i=i+1;
 hs{i}=my_subplot(1,3,3,[xh yh]);
@@ -71,15 +69,15 @@ for k = 1:size(specSim,2)
         asim(k,j) = get_powerlaw(specSim(:,k,j,ip0),[20:500]);
     end
     if k > 1
-        errorbar(nanmean(nanmean(Vx(:,k,:,ip0),1),3),nanmean(asim(k,:),2),nanstd(asim(k,:),1,2),...
+        errorbar(nanmean(nanmean(Vx(:,k,:,ip0)*100,1),3),nanmean(asim(k,:),2),nanstd(asim(k,:),1,2),...
             '.','color',cm(k,:),'markersize',10,'linewidth',1.5);
     else
-        plot([0 .4],[1 1]*asim(1,1),'k');
+        plot([0 40],[1 1]*asim(1,1),'k');
     end
 end
 end
 box off;
-xlabel('stim-related variance');
+xlabel('% stim-related variance');
 ylabel('power law exponent \alpha');
 axis square;
 %ylim([0.95 1.03])
@@ -98,4 +96,4 @@ for j = 1:length(hs)
 end
 
 %%
-print('../figs/suppSims.pdf','-dpdf');
+print('fig/supp_sims.pdf','-dpdf');

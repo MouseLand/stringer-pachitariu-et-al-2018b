@@ -54,16 +54,14 @@ fractalvmanifold(matroot)
 %% SCRIPTS FOR CONTROLS
 
 % compute cross-validated PCs of z-scored data
-% saves in matroot/zscored_spectrum.mat
+% saves in matr
 zscoredControl(matroot,useGPU);
 
 % subtract varying numbers of spontaneous PCs and compute cross-validated
 % stimulus PCs
-% saves in matroot/spontPC_spectrum.mat
 spontPCPowerLaw(dataroot, matroot, useGPU);
 
 % simulations to validate cross-validated PCA method
-% saves in matroot/simSpectrum.mat
 simPowerLaw(matroot);
 
 

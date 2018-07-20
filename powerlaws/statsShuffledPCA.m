@@ -13,12 +13,19 @@ for K = 1:6
     load(fullfile(matroot,sprintf('%s_proc.mat',stimset{K})));
     %%
     for k = 1:numel(find(stype==K))
+		%%
         A = respAll{k};
 		
 		% signal variance computation
-        Vexp         = diag(corr(A(:,:,1), A(:,:,2)));
+		Vexp = zeros(size(A,2), 1);
+        pNeu = zeros(size(A,2), 1);
+        for i = 1:size(A,2)
+            [Vexp(i), pNeu(i)]  = corr(A(:,i,1), A(:,i,2));
+        end
         Vx{K}{k}     = Vexp;
+		Px{K}{k}     = pNeu;
         
+		
 		% SNR computation
 		vnoise = var(A(:,:,1) - A(:,:,2), 1, 1) / 2;
 		v1     = var(A(:,:,1), 1, 1);
@@ -50,5 +57,5 @@ for K = 1:6
 end
 
 %%
-save(fullfile(matroot,'eigs_and_stats_all.mat'), 'specS','Vx','alpha','snr','mresp')
+save(fullfile(matroot,'eigs_and_stats_all.mat'), 'specS','Vx','Px','alpha','snr','mresp')
  

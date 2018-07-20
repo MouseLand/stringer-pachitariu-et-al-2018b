@@ -174,7 +174,7 @@ for j = 1:length(hs)
 end
 
 %%
-print('../figs/suppIncNeurnew.pdf','-dpdf','-fillpage');
+print('fig/supp_incneurstim.pdf','-dpdf','-fillpage');
 
 
 

@@ -1,15 +1,13 @@
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/'
+function suppfig_controls_spontPCs(matroot)
 
-load(fullfile(matroot, 'controlSpecs.mat'));
-load(fullfile(matroot, 'specSpontPC.mat'));
-load(fullfile(matroot, 'eigsAllStats.mat'));
+load(fullfile(matroot, 'zscored_spectrum.mat'));
+load(fullfile(matroot, 'spontPC_spectrum.mat'));
+load(fullfile(matroot, 'eigs_and_stats_all.mat'));
 
 %%
 close all;
-default_figure([10 1 6 4]);
+default_figure([10 1 6 2]);
 
-%%
-clf;
 nD = length(specZ);
 lam = NaN*ones(2800,nD);
 for k = 1:nD
@@ -34,19 +32,15 @@ sPCA = num2cell(sPCA,1);
 clear hs;
 tstr = {'Single neuron variance','Single neuron variance (z-scored)','PC variance (z-scored)',...
 	'Example recording','Averaged'};
-for j = 1:5
-    hs{j}=my_subplot(2,3,j,[.6 .6]);
+for j = 1:3
+    hs{j}=my_subplot(1,3,j,[.6 .6]);
     switch j
         case 1
             ss = sigVar;
-        case 3
-			ss = specZ;
         case 2
 			ss = specVar;
-		case 4
-            ss = specPC{2};
-        case 5
-            ss = sPCA;
+		case 3
+			ss = specZ;
     end
     lam = NaN*ones(2800,numel(ss));
     for k = 1:numel(ss)
@@ -67,11 +61,8 @@ for j = 1:5
         end
     end
     [alp,ypred] = get_powerlaw(nanmean(lam,2),[11:500]);
-    if j<4
-        plot(ypred,'k','linewidth',1.5);
-        text(.15,.45,sprintf('\\alpha=%1.2f',alp),'color','k','fontsize',8);
-    end
-    
+	plot(ypred,'k','linewidth',1.5);
+	text(.15,.45,sprintf('\\alpha=%1.2f',alp),'color','k','fontsize',8);
     if j==3
         loglog(specA,'b--','linewidth',2);
         text(.5,.95,sprintf('original\n\\alpha=%1.2f',alpA),'color','b','fontsize',8);
@@ -81,38 +72,80 @@ for j = 1:5
     box off;
     axis square;
 	axis tight;
-    %if j~=4
-        %axis([1 2800 5e-5 .1]);
-        xlabel('PC dimension');
-        ylabel('variance');
-		if j==1 || j==2
-			xlabel('neurons');
-			ylabel('signal variance');
-        else
-            ylim([1e-5 0.1]);
-   
-		end
-    %else
-    %    xlabel('neurons');
-    %    ylabel({'%'});
-    %    axis([1 1.4e4 1e-3 1]);
-    %    set(gca,'xtick',10.^[0:4],'ytick',[.01 .1 1],'yticklabel',{'1','10','100'});
-    %end
     
+	xlabel('PC dimension');
+    ylabel('variance');
+	if j==1 || j==2
+		xlabel('neurons');
+		ylabel('signal variance');
+	else
+		ylim([1e-5 0.1]);
+	end
+	
     text(-.4,1.25,char(96+j),'fontsize',12,'fontweight','bold');
     text(-.25,1.2,tstr{j},'fontsize',8);
 end
-% 
-% hs{9}=my_subplot(3,3,9,[.6 .6]);
-% for k = 1:7
-% 	smean = cellfun(@nanmean,snr{k});
-% 	plot(nPCspont(1:6),smean(1:6),'color',cm(k,:));
-% 	hold all;
-% 	
-% end
-% box off;
-% axis square;
-% 
 
-%%
-print('../figs/suppControlnew.pdf','-dpdf');
+print('fig/supp_controls.pdf','-dpdf');
+
+%% spont PC analysis
+clf;
+for j = 1:2
+    hs{j}=my_subplot(1,3,j,[.6 .6]);
+	if j == 1
+        ss = specPC{2};
+	else
+		ss = sPCA;
+	end
+    lam = NaN*ones(2800,numel(ss));
+    for k = 1:numel(ss)
+		ck = cs(k,:);
+        loglog(ss{k},'linewidth',0.5,'color',ck)
+        lam(1:numel(ss{k}),k) = ss{k};
+        hold all;
+		text(.9,1.1-.1*k,num2str(nPCspont(k)),'color',ck,'fontsize',8);
+		if k == 1
+			text(.3,1.,{'spont PCs','subtracted:'},'fontsize',8);
+		end
+    end
+    %[alp,ypred] = get_powerlaw(nanmean(lam,2),[11:500]);
+    box off;
+    axis square;
+	axis tight;
+    
+	xlabel('PC dimension');
+    ylabel('variance');
+	if j==1 || j==2
+		xlabel('neurons');
+		ylabel('signal variance');
+	else
+		ylim([1e-5 0.1]);
+	end
+	
+    text(-.4,1.25,char(96+j),'fontsize',12,'fontweight','bold');
+    text(-.25,1.2,tstr{j},'fontsize',8);
+end
+
+print('fig/supp_spontPCs.pdf','-dpdf');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

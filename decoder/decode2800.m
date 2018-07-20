@@ -10,7 +10,7 @@ load(fullfile(matroot,'natimg2800_proc.mat'));
 
 clear pCorrect nStims nNeu;
 
-nn = 2.^[13:-1:0];
+nn = 2.^[12:-1:0];
 
 nNeu = NaN*size(length(nn)+1,length(respAll));
 for ip = 1:length(respAll) 

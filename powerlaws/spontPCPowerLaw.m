@@ -1,20 +1,11 @@
-
-clear all;
-
-% datapath
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp/';        
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';        
-
+% compute cross-validated PCs with varying numbers of spontaneous PCs
+% subtracted from the stimulus responses
+function spontPCPowerLaw(dataroot, matroot, useGPU)
 load(fullfile(dataroot,'dbstims.mat'));
-
-useGPU = 1;
-stimset={'natimg2800','white2800','natimg2800_8D','natimg2800_4D','natimg2800_small','ori','natimg32'};
-%%
 
 nPCspont = [0 1 4 16 64 256 1024];
 
 K = 1;
-clf;
 %%
 tic;
 iexp = find(stype==K);
@@ -22,11 +13,16 @@ for k = 1:length(iexp)
     
     fname = fullfile(dataroot, sprintf('%s_%s_%s.mat', stimset{K},...
         dbstims(iexp(k)).mouse_name, dbstims(iexp(k)).date));
-    
-    %%
-    load(fname);
-    
-    
+    dat = load(fname);
+    % discard responses from red cells (GAD+ neurons)
+	if isfield(dat.stat,'redcell')
+		stim = dat.stim;
+		stim.resp = stim.resp(:, ~[dat.stat.redcell]);%
+		stim.spont = stim.spont(:, ~[dat.stat.redcell]);
+	else
+		stim = dat.stim;
+	end
+	
     resp0   = stim.resp(stim.istim<max(stim.istim), :);
     resp0(isnan(resp0)) = 0;
     
@@ -70,8 +66,7 @@ for k = 1:length(iexp)
         loglog(ss);
         hold all;
         drawnow;
-        toc;
-		
+		fprintf('dataset %d nPCs %d %2.1f s\n',k,toc);
         % SNR
 		vnoise = var(respB(:,:,1) - respB(:,:,2), 1, 1) / 2;
 		v1     = var(respB(:,:,1), 1, 1);
@@ -83,4 +78,4 @@ for k = 1:length(iexp)
 end
 
 %%
-save(fullfile(matroot, 'specSpontPC.mat'),'specPC','nPCspont','snr');
+save(fullfile(matroot, 'spontPC_spectrum.mat'),'specPC','nPCspont','snr');

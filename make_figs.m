@@ -15,3 +15,8 @@ fig3(dataroot, matroot);
 %% makes fig4 (relies on saved structure from fig3 (matroot/alphas.mat)!)
 fig4(matroot);
 
+%% p-value and stim-related variance figure
+suppfig_stimvar(matroot)
+
+%% low-rank receptive field figure
+suppfig_RFs(matroot)

@@ -1,9 +1,4 @@
-clear all;
-
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp/';
-
-stimset={'natimg2800','white2800','natimg2800_8D','natimg2800_4D','natimg2800_small','ori','natimg32'};
+function suppfig_gabors(matroot)
 
 results=load(fullfile(matroot,'gaborFits.mat'));
 
@@ -15,12 +10,8 @@ rf = results.rfstats{dex};
 
 %%
 close all;
-
-set(0,'DefaultAxesFontName','Arial')
 default_figure([10 1 5 5]);
 
-
-%%
 xh = .5;
 yh = .5;
 i=0;
@@ -29,13 +20,13 @@ clf;
 cm = colormap('parula');
 cm = cm(1:9:end,:);
 
-
 i=i+1;
 ineuB = find(results.vtest{dex} > .05);
 ineus = ineuB(abs(results.rfstats{dex}(1,ineuB)-0.0700)<.005 & results.rfstats{dex}(2,ineuB)==4);
 ineuEx(1) = ineus(10);
 istats = results.rfstats{dex}(:,ineuEx(1));
 
+% -------- EXAMPLE NEURON ---------------------------
 j=1;
 hs{i}=my_subplot(3,2,1,[.75 .75]);
 hs{i}.Position(1) = hs{i}.Position(1) + .35;
@@ -59,18 +50,14 @@ text(-.9,1.6-1.35,['orientation: 45' char(176)],'fontsize',8)
 text(-.9,1.35-1.35,['phase: 112.5' char(176)],'fontsize',8)
 text(-.9,1.1-1.35,['complexity: 0.58'],'fontsize',8)
 
-
-
-
-
 tstr = {{'spatial frequency','(cycles per degree)'}, {['spatial size (' char(176) ')']},'ratio (Y/X)',...
 	{['orientation (' char(176) ')']},{['phase (' char(176) ')']},'complexity'};
 
+% ------- HISTOGRAM OF STATS ---------------------------
 ym = [.5 .55 .6 .3 .15 0.4];
 flds = fields(results.gb);
 for k = 1:6
 	hp=my_subplot(3,3,k+3,[.5 .5]);
-	%hp.Position(1) = hp.Position(1) + (6-k)*.017;
 	i=i+1;
 	hs{i}=hp;
 	for d = 1:7
@@ -90,10 +77,10 @@ for k = 1:6
 		nbin(isnan(nbin)) = 0;
 		nbin = nbin/nansum(nbin);
 		if k > 3 && k < 6
-			plot(pbin*180/pi,nbin,'color',cm(d,:));
+			histogram(ipar, ibin*180/pi,'EdgeColor', cm(d, :), 'DisplayStyle', 'stairs', 'Linewidth', 1)
 			hold all;
 		else
-			plot(pbin,nbin,'color',cm(d,:));
+			histogram(ipar, ibin,'EdgeColor', cm(d, :), 'DisplayStyle', 'stairs', 'Linewidth', 1)
 			hold all;
 		end
 	end
@@ -129,7 +116,7 @@ for j = 1:length(hs)
 end
 
 %%
-print('../figs/suppGaborsnew.pdf','-dpdf');
+print('fig/supp_gabors.pdf','-dpdf');
 
 
 

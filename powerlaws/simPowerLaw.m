@@ -1,20 +1,14 @@
-
-
-
-clear all;
-
-useGPU=1;
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp';
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
+% simulations to validate cross-validated PCA method
+function simPowerLaw(matroot)
 
 % use empirical noise spectrum
 stimset={'natimg2800'};
-load(fullfile(dataroot,sprintf('%sProc.mat',stimset{1})));
+load(fullfile(matroot,sprintf('%s_proc.mat',stimset{1})));
 alpha=0.7;
 
 %%
 for k = 1:length(respAll)
-	[ss0,cproj,ns0]=shuffledSpectrum(gpuArray(single(respAll{k})),10,useGPU);
+	[ss0,cproj,ns0]=shuffledSpectrum(single(respAll{k}),10,useGPU);
 	ns           = gather_try(nanmean(ns0,2));
 	ns           = ns / sum(ns);
 	specNoise{k} = ns;

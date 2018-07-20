@@ -1,3 +1,7 @@
+% splits stimulus responses into nsplits and computes mean of responses in
+% each split. if interleaved then the responses are interleaved in time,
+% otherwise, split happens in the middle of the responses temporally
+% (resp is in stimulus presentation order)
 function [A, Asem] = compute_means(istim, resp1, nsplits, interleaved)
 
 [Ntrials NN] = size(resp1);
@@ -22,4 +26,3 @@ for i = 1:nimg
         end
     end    
 end
-

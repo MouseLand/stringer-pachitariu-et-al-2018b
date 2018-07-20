@@ -1,12 +1,19 @@
+%% LOW RANK RECEPTIVE FIELD FIGURE!
+function suppfig_RFs(matroot)
+
+lr = load(fullfile(matroot,'lowrank_fits.mat'));
+
+% choose example dataset and compute RFs for plot
+d = 5;
+[~, isort] = sort(lr.vtest{d}, 'descend');
+[Ly,Lx,~]=size(imgs);
+% low-rank RFs
+[lrRF] = plotLowRankRFs(Ly, Lx, lr.aAll{d}, lr.bAll{d}, lr.cAll{d});
 
 
-%%  RECEPTIVE FIELD FIGURE!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 close all;
-HF=figure('Position', [10 1 10 10]);
-pos = get(HF,'Position');
-set(HF,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3)*1.0, pos(4)*1.0])
+default_figure([10 1 10 10]);
 
-%%
 clf;
 
 rng(201);
@@ -32,4 +39,4 @@ for i = 1:ncols
     drawnow;
 end
 %%
-print('../figs/suppfig1_RFs.pdf','-dpdf','-bestfit');
+print('fig/supp_RFs.pdf','-dpdf','-bestfit');
