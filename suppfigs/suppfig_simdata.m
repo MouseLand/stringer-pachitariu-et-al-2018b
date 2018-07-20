@@ -22,9 +22,9 @@ for k = 1:size(specSim,2)
     ss = specSim(:,k,4,ip0);
     loglog(ss / sum(ss),'color',cm(k,:));
     hold all;
-    text(.9,1-(k-1)*.12,[sprintf('%1.0f',nanmean(100*Vx(:,k,1,ip0)))],'color',cm(k,:),'fontsize',8,'HorizontalAlignment','right');
+    text(.95,1-(k-1)*.12,[sprintf('%1.0f',nanmean(100*Vx(:,k,1,ip0)))],'color',cm(k,:),'fontsize',8,'HorizontalAlignment','right');
 end
-text(.7,1,'% stim variance: ','fontsize',8,'HorizontalAlignment','right');
+text(.77,1,'% stim variance: ','fontsize',8,'HorizontalAlignment','right');
 box off;
 grid on;
 grid minor;
