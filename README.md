@@ -29,7 +29,9 @@ Each of the following stimulus sets was presented 96 times in a recording:
 - ori32: 32 different directions of drifting gratings 
 - natimg32: 32 different full-field natural images 
 
-**dbstims.mat**: Contains summary information about all the recordings. In summary there are 32 total recordings: 7 natimg2800, 4 natimg2800_white, 6 natimg2800_8D, 4 natimg2800_4D, 3 natimg2800_small, 4 ori, 4 natimg32 
+### Summary of recordings
+
+**dbstims.mat**: Database of recording information. In summary there are 32 total recordings: 7 natimg2800, 4 natimg2800_white, 6 natimg2800_8D, 4 natimg2800_4D, 3 natimg2800_small, 4 ori, 4 natimg32 
 - *dbstims*: database with information about recording sessions in order specified above (mouse_name and date are used to identify each recording)
 - *stimset*: names of each of the different recording types 
 - *stype*: for each k in stype, dbstims(k) is recorded with stimulus condition stimset{stype(k)} 
