@@ -51,7 +51,7 @@ for K = 1:6
         axis square;
         drawnow;
        
-        alpha{K}(k) = get_powerlaw(specS{K}{k}, [5:min(500,numel(ss)-2)]);
+        alpha{K}(k) = get_powerlaw(specS{K}{k}, [11:min(500,numel(ss)-2)]);
         fprintf('%s stimvar: %0.3f power-law: %1.3f\n', stimset{K}, nanmean(Vexp), alpha{K}(k));
 	end
 end
