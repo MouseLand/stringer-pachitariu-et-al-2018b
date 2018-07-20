@@ -4,6 +4,8 @@ dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp/';
 matroot  = '/media/carsen/DATA2/grive/10krecordings/stimResults/';
 useGPU = 1;
 
+addpath(genpath('.'));
+
 %% SCRIPTS FOR MAIN ANALYSES AND FIGURES
 
 % compute two repeats from sequence of stimuli and response 
