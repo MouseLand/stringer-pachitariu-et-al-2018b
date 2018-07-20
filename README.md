@@ -60,7 +60,7 @@ All image files contain a matrix imgs which is 68 degrees by 270 degrees by numb
 - **images_natimg2800_4D_mname_date.mat**: Images presented during recording natimg2800_4D_mname_date.mat 
 - **images_natimg2800_small_mname_date.mat**: Images presented during recording natimg2800_small_mname_date.mat 
 
-Extra: sparseStats.mat are the powerlaws from sparse noise recordings; allimgs.mat contains example images from the images*.mat 
+Extra: **sparseStats.mat** are the powerlaws from sparse noise recordings; **allimgs.mat** contains example images from the images*.mat 
 
 
 ### How to load the data into python
