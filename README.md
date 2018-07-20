@@ -6,7 +6,7 @@ Carsen Stringer, Marius Pachitariu, Nicholas Steinmetz, Matteo Carandini, Kennet
 
 It relies on data deposited on figshare at:
 
-Carsen Stringer, Marius Pachitariu, Nicholas Steinmetz, Matteo Carandini, Kenneth D. Harris Recordings of ten thousand neurons in visual cortex in response to 2,800 natural images. (link)
+Carsen Stringer, Marius Pachitariu, Nicholas Steinmetz, Matteo Carandini, Kenneth D. Harris. *Recordings of ten thousand neurons in visual cortex in response to 2,800 natural images.* (link)
 
 Here's the data description.
 
