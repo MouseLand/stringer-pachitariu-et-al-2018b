@@ -62,7 +62,7 @@ zscoredControl(matroot,useGPU);
 % saves in matroot/spontPC_spectrum.mat
 spontPCPowerLaw(dataroot, matroot, useGPU);
 
-% simulations to validate cross-validated PCA method
+%% simulations to validate cross-validated PCA method
 % saves in matroot/simSpectrum.mat
 simPowerLaw(matroot);
 

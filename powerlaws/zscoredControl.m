@@ -8,7 +8,7 @@ load(fullfile(matroot,'eigs_and_stats_all.mat'));
 clf;
 clear svar;
 for k = 1:numel(respAll)
-    specVar{k} = sort(Vx{K}{k},'descend');
+    specVar{k} = sort(Vx{1}{k},'descend');
 	totVar{k} = 0.5 * (var(respAll{k}(:,:,1),1,1) + var(respAll{k}(:,:,2),1,1));
 	noiseVar{k} = 0.5 * var(respAll{k}(:,:,1) - respAll{k}(:,:,2),1,1);
 	sigVar{k} = totVar{k} - noiseVar{k};
