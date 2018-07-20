@@ -15,7 +15,6 @@ The datasets to produce all the main figures are available. The script 'process_
 ### How to load the data into python
 ```
 import scipy.io as sio
-import numpy as np
 mt = sio.loadmat('natimg2800_M160825_MP027_2016-12-14.mat')
 
 ### stimulus responses
@@ -31,7 +30,7 @@ mt[‘stat’][0][‘npix’]       # one example field, tells you how pixels ma
 ### loading images
 mt = sio.loadmat('images_natimg2800_all.mat')
 imgs = mt['imgs']  # 68 by 270 by number of images
-# check out first image
+# check out first image using matplotlib.pyplot
 plt.imshow(imgs[:,:,0])
 
 ```
