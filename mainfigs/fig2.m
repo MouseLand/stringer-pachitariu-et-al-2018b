@@ -8,11 +8,11 @@ load(fullfile(matroot,'natimg2800_proc.mat'));
 
 %%
 gb=load(fullfile(matroot,'gabor_fits.mat'));
-specG = [];
+specG = NaN*ones(2800,length(gb.specS));
 for j = 1:length(gb.specS)
-	specG = [specG gb.specS{j}(1:1100)];
+	specG(1:length(gb.specS{j}),j) = gb.specS{j};
 end
-specG = specG ./ sum(specG,1);
+specG = specG ./ nansum(specG,1);
 
 % example dataset
 my_index = 6;

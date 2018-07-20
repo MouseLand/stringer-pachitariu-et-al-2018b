@@ -6,9 +6,8 @@ lr = load(fullfile(matroot,'lowrank_fits.mat'));
 % choose example dataset and compute RFs for plot
 d = 5;
 [~, isort] = sort(lr.vtest{d}, 'descend');
-[Ly,Lx,~]=size(imgs);
 % low-rank RFs
-[lrRF] = plotLowRankRFs(Ly, Lx, lr.aAll{d}, lr.bAll{d}, lr.cAll{d});
+[lrRF] = plotLowRankRFs(68, 270, lr.aAll{d}, lr.bAll{d}, lr.cAll{d});
 
 
 close all;

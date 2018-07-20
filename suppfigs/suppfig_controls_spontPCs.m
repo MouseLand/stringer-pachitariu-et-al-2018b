@@ -89,9 +89,12 @@ end
 print('fig/supp_controls.pdf','-dpdf');
 
 %% spont PC analysis
-clf;
+
+close all;
+default_figure([10 1 4 2]);
+tstr = {'Example recording','Averaged'};
 for j = 1:2
-    hs{j}=my_subplot(1,3,j,[.6 .6]);
+    hs{j}=my_subplot(1,2,j,[.6 .6]);
 	if j == 1
         ss = specPC{2};
 	else
@@ -103,9 +106,9 @@ for j = 1:2
         loglog(ss{k},'linewidth',0.5,'color',ck)
         lam(1:numel(ss{k}),k) = ss{k};
         hold all;
-		text(.9,1.1-.1*k,num2str(nPCspont(k)),'color',ck,'fontsize',8);
+		text(1,1.1-.1*k,num2str(nPCspont(k)),'color',ck,'fontsize',8);
 		if k == 1
-			text(.3,1.,{'spont PCs','subtracted:'},'fontsize',8);
+			text(.42,1.1,{'spont PCs','subtracted:'},'fontsize',8);
 		end
     end
     %[alp,ypred] = get_powerlaw(nanmean(lam,2),[11:500]);

@@ -16,7 +16,19 @@ fig3(dataroot, matroot);
 fig4(matroot);
 
 %% p-value and stim-related variance figure
-suppfig_stimvar(matroot)
+suppfig_stimvar(matroot);
+
+%% controls (z-scoring responses, subtracting spont PCs)
+suppfig_controls_spontPCs(matroot);
 
 %% low-rank receptive field figure
-suppfig_RFs(matroot)
+suppfig_RFs(matroot);
+
+%% simulated data powerlaws
+suppfig_simdata(matroot);
+
+%% increasing neurons and stimuli
+suppfig_incrNeuStim(dataroot,matroot);
+
+%% statistics from gabor fits
+suppfig_gabors(matroot);

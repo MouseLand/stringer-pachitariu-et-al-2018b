@@ -1,8 +1,5 @@
-% compute all stats
-
-clear all;
-dataroot = '/media/carsen/DATA2/grive/10krecordings/imgResp';
-matroot = '/media/carsen/DATA2/grive/10krecordings/stimResults/';        
+% increasing neurons and stimuli in all image datasets
+function suppfig_incrNeuStim(dataroot,matroot)
 
 load(fullfile(dataroot,'dbstims.mat'));
 
@@ -21,7 +18,7 @@ clear hs;
 kp = [2 5 3 4 6];
 
 for K = 1:5
-    load(fullfile(matroot,sprintf('eigsControls_%s.mat',stimset{kp(K)})));
+    load(fullfile(matroot,sprintf('eigs_incneurstim_%s.mat',stimset{kp(K)})));
         
     blu = [0 0 1];
     red = [1 0 0];
@@ -64,8 +61,8 @@ for K = 1:5
                 fnan = find(isnan(ss),1)-1;
                 if isempty(fnan); fnan = numel(ss)-1; end
                 if ij == 1
-                    if fnan > nfrac(j)*NumNeu(k)
-                        fnan = nfrac(j)*NumNeu(k);
+                    if fnan > nfrac(j)*NumNeur(k)
+                        fnan = nfrac(j)*NumNeur(k);
                     end
                 end
                 trange0 = 11:max(12,min(500, (round(fnan*.5))));

@@ -38,7 +38,8 @@ hs=my_subplot(2,2,2,[.7 .6]);
 hs.Position(2) = hs.Position(2) - .03;
 bins = [0:.005:1];
 for j = 1:numel(Px{1})
-	histogram(Px{1}{j},bins, 'EdgeColor', col(icol(k), :), 'DisplayStyle', 'stairs', 'Linewidth', 1);
+	histogram(Px{1}{j},bins, 'EdgeColor', col(icol(j), :), 'DisplayStyle',...
+		'stairs', 'Linewidth', 1,'normalization','probability');
     hold all;
 end
 set(gca,'XScale','log');
@@ -53,6 +54,7 @@ hold on
 plot([.05 .05], [0 .05], 'k')
 hold off
 axis tight
+ylim([0 .05]);
 
 % --------CORRELATIONS------------------------------------------------
 hs=my_subplot(2,1,2);

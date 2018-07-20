@@ -66,7 +66,7 @@ for k = 1:length(iexp)
         loglog(ss);
         hold all;
         drawnow;
-		fprintf('dataset %d nPCs %d %2.1f s\n',k,toc);
+		fprintf('dataset %d nPCs %d (%6.1f s) \n',k,nPCs,toc);
         % SNR
 		vnoise = var(respB(:,:,1) - respB(:,:,2), 1, 1) / 2;
 		v1     = var(respB(:,:,1), 1, 1);

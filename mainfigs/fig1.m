@@ -32,6 +32,7 @@ xf = 4.5;
 yf = 7;
 HF=default_figure([11 3 xf yf]);
 
+clf;
 i=0;
 i=i+1;
 
@@ -77,10 +78,44 @@ set(gca, 'ytick', [1 3 5]/6 * Ly, 'yticklabel', [30, 0, -30])
 xlabel('horizontal angle', 'Fontsize', 8)
 ylabel({'vertical angle'}, 'Fontsize', 8)
 
+
+% ------ TRIAL-AVERAGED DATA ---------------------------------------------
+i=i+1;
+hs{i} = my_subplot(4,4,9,[.7 .9]);
+hs{i}.Position(1) = hs{i}.Position(1)+.01;
+hs{i}.Position(2) = hs{i}.Position(2)+.13;
+rng(10);
+R32 = dat32{2};
+iperm = randperm(size(R32,2), 65);
+R32 = R32(1:32, iperm,:);
+% FIRST REPEAT
+imagesc(R32(:, :,1)', [-5 5])
+text(-.01, .5, sprintf('neurons   65 / %d',size(dat32{3},2)),  'Rotation', 90, 'horizontalalign', 'center', 'verticalalign', 'bottom', 'Fontangle', 'normal', 'fontsize', 8)
+text(.5, -.02, 'stimuli', 'horizontalalign', 'center', 'verticalalign', 'top', 'Fontangle', 'normal', 'fontsize', 8)
+axis off
+axis image;
+rb = redblue;
+colormap(hs{i},rb)
+text(.0, 1.0, 'first data half', 'verticalalignment', 'bottom','HorizontalAlignment','left','fontsize',8)
+% SECOND REPEAT
+hp = my_subplot(4,4,10,[.7 .9]);
+hp.Position(2) = hp.Position(2)+.13;
+hp.Position(1) = hp.Position(1)-.05;
+imagesc(R32(:, :,2)', [-5 5])
+text(.5, -.02, 'stimuli', 'horizontalalign', 'center', 'verticalalign', 'top', 'Fontangle', 'normal', 'fontsize', 8)
+axis off
+text(.0, 1.0, 'second data half', 'verticalalignment', 'bottom','HorizontalAlignment','left','fontsize',8)
+axis image;
+colormap(hp,rb)
+hc=colorbar;
+hc.Position(1)=.44;
+hc.Position(2)=hp.Position(2);
+hc.Position(4) = .04;
+
 % ------- STIMULUS ORDER ---------------------------------------------
 i=i+1;
 hs{i} = my_subplot(8,2,5,[.6 .6]);
-hs{i}.Position(2) = hs{i}.Position(2) - .08;
+hs{i}.Position(2) = hs{i}.Position(2) - .41;
 load(fullfile(dataroot,'default_stim_order.mat'))
 img = [];
 L   = size(imgs,1);
@@ -101,37 +136,6 @@ text(.72, .25, '... ', 'horizontalalignment', 'left', 'verticalalignment', 'midd
 text(.85, .85, 'x2800', 'horizontalalignment', 'left', 'verticalalignment', 'middle', 'Fontsize', 8, 'Fontweight', 'bold', 'Fontangle', 'normal');
 text(.85, .25, 'x2800', 'horizontalalignment', 'left', 'verticalalignment', 'middle', 'Fontsize', 8, 'Fontweight', 'bold', 'Fontangle', 'normal');
 
-% ------ TRIAL-AVERAGED DATA ---------------------------------------------
-i=i+1;
-hs{i} = my_subplot(4,4,9,[.7 .9]);
-hs{i}.Position(1) = hs{i}.Position(1)+.01;
-rng(10);
-R32 = dat32{2};
-iperm = randperm(size(R32,2), 65);
-R32 = R32(1:32, iperm,:);
-% FIRST REPEAT
-imagesc(R32(:, :,1)', [-5 5])
-text(-.01, .5, sprintf('neurons   65 / %d',size(dat32{3},2)),  'Rotation', 90, 'horizontalalign', 'center', 'verticalalign', 'bottom', 'Fontangle', 'normal', 'fontsize', 8)
-text(.5, -.02, 'stimuli', 'horizontalalign', 'center', 'verticalalign', 'top', 'Fontangle', 'normal', 'fontsize', 8)
-axis off
-axis image;
-rb = redblue;
-colormap(hs{i},rb)
-text(.0, 1.0, 'first data half', 'verticalalignment', 'bottom','HorizontalAlignment','left','fontsize',8)
-% SECOND REPEAT
-hp = my_subplot(4,4,10,[.7 .9]);
-hp.Position(2) = hp.Position(2);
-hp.Position(1) = hp.Position(1)-.05;
-imagesc(R32(:, :,2)', [-5 5])
-text(.5, -.02, 'stimuli', 'horizontalalign', 'center', 'verticalalign', 'top', 'Fontangle', 'normal', 'fontsize', 8)
-axis off
-text(.0, 1.0, 'second data half', 'verticalalignment', 'bottom','HorizontalAlignment','left','fontsize',8)
-axis image;
-colormap(hp,rb)
-hc=colorbar;
-hc.Position(1)=.44;
-hc.Position(2)=hp.Position(2);
-hc.Position(4) = .04;
 
 % -------- SNR ----------------------------------------------------------------
 i=i+1;
@@ -254,8 +258,8 @@ plot(45*[1 1], [-45 45],'k');
 % ------------ TITLES AND LETTERS ----------------------------------
 ttl{1} = '';ttl{2} = '';
 ttl{3} = 'Example stimulus';
-ttl{4} = 'Stimulus sequence';
-ttl{5} = 'Example data (trial-averaged)';
+ttl{5} = 'Stimulus sequence';
+ttl{4} = 'Example data (trial-averaged)';
 ttl{6} = 'Neural stimulus tuning';
 ttl{7} = 'Decoding 2800 stimuli';
 ttl{8} = 'Best single-neuron RFs';
@@ -265,7 +269,7 @@ for j = 1:length(hs)
 	if j==1 || (j>2 && j<7)
 		hp(1) = .01;
 		hp(2) = hp(2) + hp(3)*.12;
-		if j==5
+		if j==4
 			hp(2) = hp(2) + hp(3)*.2;
 		end
 	elseif j==8
@@ -294,8 +298,8 @@ for j = 1:length(hs)
 	hp(1)=hp(1)+.03;
 	axes('position',hp);
 	axis off;
-	text(0,.95,ttl{j},'units','normalized','fontsize',10,'fontangle','normal');
+	text(0,.98,ttl{j},'units','normalized','fontsize',10,'fontangle','normal');
 	
 end
 
-print(HF,'fig/fig1.pdf','-dpdf');
+print('fig/fig1.pdf','-dpdf');

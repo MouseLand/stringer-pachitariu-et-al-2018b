@@ -1,6 +1,6 @@
 function suppfig_gabors(matroot)
 
-results=load(fullfile(matroot,'gaborFits.mat'));
+results=load(fullfile(matroot,'gabor_fits.mat'));
 
 %%
 dex = 6;
@@ -12,6 +12,7 @@ rf = results.rfstats{dex};
 close all;
 default_figure([10 1 5 5]);
 
+%%
 xh = .5;
 yh = .5;
 i=0;
@@ -29,7 +30,7 @@ istats = results.rfstats{dex}(:,ineuEx(1));
 % -------- EXAMPLE NEURON ---------------------------
 j=1;
 hs{i}=my_subplot(3,2,1,[.75 .75]);
-hs{i}.Position(1) = hs{i}.Position(1) + .35;
+hs{i}.Position(1) = hs{i}.Position(1) + .38;
 hs{i}.Position(2) = hs{i}.Position(2);
 imagesc(cRF(:,:,ineuEx(j)),[-1 1]*.25);
 axis image;
@@ -42,19 +43,19 @@ colormap(hs{i},redblue);
 ylabel('Y (\circ)')
 xlabel('X (\circ)')
 
-text(-.9,2.6-1.35,'Example fit')
-text(-.9,2.35-1.35,'spatial frequency: 0.07 cpd','fontsize',8)
-text(-.9,2.1-1.35,['spatial size: 4' char(176)],'fontsize',8)
-text(-.9,1.85-1.35,'ratio (Y/X): 1.5','fontsize',8)
-text(-.9,1.6-1.35,['orientation: 45' char(176)],'fontsize',8)
-text(-.9,1.35-1.35,['phase: 112.5' char(176)],'fontsize',8)
-text(-.9,1.1-1.35,['complexity: 0.58'],'fontsize',8)
+text(-.95,2.6-1.35,'Example fit')
+text(-.95,2.35-1.35,'spatial frequency: 0.07 cpd','fontsize',8)
+text(-.95,2.1-1.35,['spatial size: 4' char(176)],'fontsize',8)
+text(-.95,1.85-1.35,'ratio (Y/X): 1.5','fontsize',8)
+text(-.95,1.6-1.35,['orientation: 45' char(176)],'fontsize',8)
+text(-.95,1.35-1.35,['phase: 112.5' char(176)],'fontsize',8)
+text(-.95,1.1-1.35,['complexity: 0.58'],'fontsize',8)
 
 tstr = {{'spatial frequency','(cycles per degree)'}, {['spatial size (' char(176) ')']},'ratio (Y/X)',...
 	{['orientation (' char(176) ')']},{['phase (' char(176) ')']},'complexity'};
 
 % ------- HISTOGRAM OF STATS ---------------------------
-ym = [.5 .55 .6 .3 .15 0.4];
+ym = [.5 .55 .6 .3 .15 0.45];
 flds = fields(results.gb);
 for k = 1:6
 	hp=my_subplot(3,3,k+3,[.5 .5]);
@@ -77,10 +78,12 @@ for k = 1:6
 		nbin(isnan(nbin)) = 0;
 		nbin = nbin/nansum(nbin);
 		if k > 3 && k < 6
-			histogram(ipar, ibin*180/pi,'EdgeColor', cm(d, :), 'DisplayStyle', 'stairs', 'Linewidth', 1)
+			histogram(ipar*180/pi, ibin*180/pi,'EdgeColor', cm(d, :), 'DisplayStyle', 'stairs',...
+				'Linewidth', 1,'normalization','probability')
 			hold all;
 		else
-			histogram(ipar, ibin,'EdgeColor', cm(d, :), 'DisplayStyle', 'stairs', 'Linewidth', 1)
+			histogram(ipar, ibin,'EdgeColor', cm(d, :), 'DisplayStyle', 'stairs',...
+				'Linewidth', 1,'normalization','probability')
 			hold all;
 		end
 	end
