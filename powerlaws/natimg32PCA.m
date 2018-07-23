@@ -76,7 +76,7 @@ for k = 1:numel(iexp)
 	
     semilogx(cumsum(ss)); 
     hold all
-	dat32{k} = A;
+	dat32{k} = A1;
     drawnow
 end
 

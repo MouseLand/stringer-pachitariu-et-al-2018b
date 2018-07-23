@@ -86,7 +86,7 @@ for k = 1:5
     end
     axis square;
     if k==1
-        text(-.2,1.5,'Neural responses','fontsize',10,'fontweight','normal');
+        text(-.2,1.5,'Simulations','fontsize',10,'fontweight','normal');
     end
     
     s = spec{k};
