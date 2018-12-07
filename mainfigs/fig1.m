@@ -84,10 +84,10 @@ i=i+1;
 hs{i} = my_subplot(4,4,9,[.7 .9]);
 hs{i}.Position(1) = hs{i}.Position(1)+.01;
 hs{i}.Position(2) = hs{i}.Position(2)+.13;
-rng(10);
-R32 = dat32{2};
+rng(11);
+R32 = dat32{4};
 iperm = randperm(size(R32,2), 65);
-R32 = R32(1:32, iperm,:);
+R32 = zscore(R32(1:32, iperm,:),1,1);
 % FIRST REPEAT
 imagesc(R32(:, :,1)', [-5 5])
 text(-.01, .5, sprintf('neurons   65 / %d',size(dat32{3},2)),  'Rotation', 90, 'horizontalalign', 'center', 'verticalalign', 'bottom', 'Fontangle', 'normal', 'fontsize', 8)

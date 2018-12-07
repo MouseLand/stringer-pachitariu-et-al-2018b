@@ -1,4 +1,7 @@
 % simulations to validate cross-validated PCA method
+% poisson noise - simulate 2P noise
+% multiplicative noise
+
 function simPowerLaw(matroot)
 
 % use empirical noise spectrum

@@ -67,6 +67,31 @@ end
 save(fullfile(matroot,'scalefree.mat'),'exresp','spec','exproj','alp');
 
 
+%% small perturbation example
+% k=5, even curves should be zero at 2048
+xpert = px;
+xpert(2:10:end,2047:2049) = 1;
+
+[u s v] = svdecon(single(xpert - mean(xpert,1)));
+s= diag(s.^2);
+clf;
+loglog(s)
+    
+    %% take a random projection
+    
+    w = randn(3,nD);
+    
+    wproj = w * px;
+    
+    %
+    subplot(1,5,k),
+    plot3(wproj(1,:),wproj(2,:),wproj(3,:)-min(wproj(3,:)),'linewidth',1);
+    grid on;
+    hold all;
+    plot3(wproj(1,:),wproj(2,:),zeros(1,np),'color',.7*[1 1 1],'linewidth',1);
+    drawnow;
+
+
 
 
 

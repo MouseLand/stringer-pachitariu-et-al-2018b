@@ -1,5 +1,6 @@
 %%%% fit gabors from grid of statistics given by A on XY grid of X %%%%%
 % fit is an additive model of simple + complex cell
+% or a simple + complex divisive normalized cell
 % X: grid of y and x points
 % A: npixels x ngabors <- different gabors that are being tested
 % yp,xp: possible receptive field centers for each cell
@@ -13,7 +14,7 @@
 % cbest: weights of model
 % gpred: responses of gabors to test images (images x neurons)
 
-function [vartrain,vartest,ybest,xbest,gbest,cbest,rGtrain,rGtest] = gaborFITRect(X,A, yp, xp, imgtrain,imgtest, rtrain,rtest)
+function [vartrain,vartest,ybest,xbest,gbest,cbest,rGtrain,rGtest] = gaborFITRect(X,A, yp, xp, imgtrain,imgtest, rtrain,rtest, wnorm)
 
 A2 = A;
 A2(5,:) = A2(5,:) + pi/2;
@@ -65,6 +66,15 @@ for iy = 1:numel(yp)
 		% responses are rectified
 		respG1 = max(0, respG1);
 		respG2 = max(0, respG2);
+		
+		%% compute responses of simple and complex cells normalized
+		if wnorm
+			respGnorm = respG1 ./ mean(respG1.^2,1).^.5;
+			respG1 = [respG1; respGnorm];
+			respGnorm = respG2 ./ mean(respG2.^2,1).^.5;
+			respG2 = [respG2; respGnorm];
+		end
+		
 				
 		%% compute coefficients for best fit: r = c1*respG1 + c2*respG2
         % inverted covariance matrices
@@ -119,6 +129,13 @@ for iy = 1:numel(yp)
 		respG2 = (respG1.^2 + respG2.^2).^.5;                
 		respG1 = max(0, respG1);
 		respG2 = max(0, respG2);
+		if wnorm
+			respGnorm = respG1 ./ mean(respG1.^2,1).^.5;
+			respG1 = [respG1; respGnorm];
+			respGnorm = respG2 ./ mean(respG2.^2,1).^.5;
+			respG2 = [respG2; respGnorm];
+		end
+				
 		tpred  = c1(m1).*(respG1(im(vbetter),:) - b(:,1)) + ...
 			c2(m1).*(respG2(im(vbetter),:) - b(:,2));
 		tpred = gather(tpred);
@@ -138,7 +155,7 @@ for iy = 1:numel(yp)
         rGtest(vbetter,:)  = respTest;
         
     end
-    %fprintf('RF Y %d done, %.2f sec, %1.3f train, %1.3f test\n',yp(iy),toc, nanmean(vartrain), nanmean(vartest));
+    fprintf('RF Y %d done, %.2f sec, %1.3f train, %1.3f test\n',yp(iy),toc, nanmean(vartrain), nanmean(vartest));
 end
 fprintf('>>> %1.3f train variance, %1.3f test variance\n', nanmean(vartrain), nanmean(vartest));
 
