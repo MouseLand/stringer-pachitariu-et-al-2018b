@@ -1,4 +1,4 @@
-function fig2(dataroot, matroot)
+function fig2(matroot)
 
 %%
 load(fullfile(matroot,'eigs_and_stats_all.mat'));
@@ -16,7 +16,7 @@ specG = specG ./ nansum(specG,1);
 
 % example dataset
 my_index = 6;
-respBz  = respAll{my_index};
+respBz  = double(respAll{my_index});
 % neuron variance
 repvar = mean(respBz(:,:,1).*respBz(:,:,2), 1);
 vexpALL = repvar;
@@ -28,6 +28,7 @@ vstimALL = repvar;
 R1 = gpuArray(single(respBz(:,:,1)));
 [~, ~, C] = svdecon(R1);
 C = gather(C);
+cproj = [];
 cproj(:,:,1) = respBz(:,:,1) * C;
 cproj(:,:,2) = respBz(:,:,2) * C;
 
@@ -35,8 +36,10 @@ rng('default');
 
 %%
 close all
-default_figure([15 1 4.5 6.]);
+default_figure([1 1 4.5 6.]);
 
+%%
+clf;
 nstim = 25;
 nn    = 20;
 dy1 = 0.03;
@@ -67,8 +70,8 @@ text(-.23, 0.5, {'PC','test'}, 'horizontalalignment', 'left', 'verticalalignment
 xlabel('stimuli','fontsize',8)
 colormap(redblue);
 
-xh = .6;
-yh = .6;
+xh = .55;
+yh = .55;
 
 yH = .37;
 
@@ -167,7 +170,8 @@ histogram(pall,[.75:.05:1.1],'facecolor',[.5 .5 .5]);
 ylabel('# of recordings')
 xlim([.85 1.15]);
 box off;
-xlabel('power law exponent \alpha');
+text(-0.25,-.2,'power law exponent','fontsize',8);
+text(1.05,-.16,'\alpha');
 axis square;
 
 
@@ -301,7 +305,7 @@ for kt = 1:2
     axis square;
 end
     
-%%
+%
 for j = 1:length(hs)
     axes(hs{j});
     if j ==1
@@ -309,13 +313,11 @@ for j = 1:length(hs)
         jx = -.45;
     else
         jy = 1.3;
-        jx = -.45;
+        jx = -.55;
     end
     text(jx,jy,char(96+j),'units','normalized','fontsize',11,'fontweight','bold','fontangle','normal');
 end
 
+%
 
-
-%%
-
-print('fig/fig2.pdf','-dpdf');
+print(fullfile(matroot,'fig2.pdf'),'-dpdf');

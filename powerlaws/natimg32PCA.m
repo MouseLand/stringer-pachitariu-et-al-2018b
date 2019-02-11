@@ -64,11 +64,13 @@ for k = 1:numel(iexp)
 	
 	for i = 1:2
         A(:,:,i)  = A(:,:,i) - (A(:,:,i) * Vspont(:,1:nPCspont)) * Vspont(:,1:nPCspont)';
-    end
-    
-    nshuff = 20;
-    ss0 = shuffledSpectrum(A, nshuff, useGPU);
-    ss = gather_try(nanmean(ss0,2));
+	end
+    A = gather_try(A);
+	A = double(A);
+	
+    nshuff = 10;
+    ss0 = shuffledSpectrum(A, nshuff);
+    ss = nanmean(ss0,2);
 	ss(ss<0) = 0;
     ss = ss(:) / sum(ss(ss>0));
     

@@ -86,50 +86,7 @@ for j = 1:3
     text(-.25,1.2,tstr{j},'fontsize',8);
 end
 
-print('fig/supp_controls.pdf','-dpdf');
-
-%% spont PC analysis
-
-close all;
-default_figure([10 1 4 2]);
-tstr = {'Example recording','Averaged'};
-for j = 1:2
-    hs{j}=my_subplot(1,2,j,[.6 .6]);
-	if j == 1
-        ss = specPC{2};
-	else
-		ss = sPCA;
-	end
-    lam = NaN*ones(2800,numel(ss));
-    for k = 1:numel(ss)
-		ck = cs(k,:);
-        loglog(ss{k},'linewidth',0.5,'color',ck)
-        lam(1:numel(ss{k}),k) = ss{k};
-        hold all;
-		text(1,1.1-.1*k,num2str(nPCspont(k)),'color',ck,'fontsize',8);
-		if k == 1
-			text(.42,1.1,{'spont PCs','subtracted:'},'fontsize',8);
-		end
-    end
-    %[alp,ypred] = get_powerlaw(nanmean(lam,2),[11:500]);
-    box off;
-    axis square;
-	axis tight;
-    
-	xlabel('PC dimension');
-    ylabel('variance');
-	if j==1 || j==2
-		xlabel('neurons');
-		ylabel('signal variance');
-	else
-		ylim([1e-5 0.1]);
-	end
-	
-    text(-.4,1.25,char(96+j),'fontsize',12,'fontweight','bold');
-    text(-.25,1.2,tstr{j},'fontsize',8);
-end
-
-print('fig/supp_spontPCs.pdf','-dpdf');
+print(fullfile(matroot,'supp_controls.pdf'),'-dpdf');
 
 
 

@@ -1,8 +1,8 @@
 % compute cross-validated PCs for varying numbers of neurons and stimuli
-function incNeurStimPowerLaw(dataroot, matroot, useGPU)
+function incNeurStimPowerLaw(dataroot, matroot)
 
 load(fullfile(dataroot,'dbstims.mat'));
-
+%%
 for K = 1:6
     clf;
     load(fullfile(matroot,sprintf('%s_proc.mat',stimset{K})));
@@ -10,7 +10,7 @@ for K = 1:6
     iexp = find(stype==K);
 	NumNeur = [];
     for ik = 1:length(iexp)
-        respBz = respAll{ik};
+        respBz = double(respAll{ik});
         
         sperm = randperm(size(respBz,1));
         nperm = randperm(size(respBz,2));
@@ -33,10 +33,9 @@ for K = 1:6
                     nr0 = nr(1);
                 end
                 respSub = respBz(sperm(1:sr0),nperm(1:nr0),:);
-                respSub = gpuArray(respSub);
-               
+                
                 nshuff = 10;
-                ss = shuffledSpectrum(respSub, nshuff, useGPU);
+                ss = shuffledSpectrum(respSub, nshuff);
                 ss = gather_try(nanmean(ss,2));
                 ss = ss(:) / sum(ss);
                 specS{k,j}(1:numel(ss), ik) = ss;

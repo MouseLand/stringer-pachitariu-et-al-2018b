@@ -1,15 +1,12 @@
-function [specS,cproj,specN] = shuffledSpectrum(respB0, nsh,useGPU)
+function [specS,cproj,specN] = shuffledSpectrum(respB0, nsh)
 
 nstims = size(respB0,1);
+respB = double(respB0);
 fullCOV = reshape(permute(respB0,[1 3 2]),[],size(respB0,2)) * ...
     reshape(permute(respB0,[1 3 2]),[],size(respB0,2))';
-if useGPU
-	fullCOV = gpuArray(single(fullCOV));
-	respB0=gpuArray(single(respB0));
-	specS=gpuArray.zeros(nstims, nsh, 'single');
-else
-	specS=zeros(nstims, nsh, 'single');
-end
+	
+specS=zeros(nstims, nsh, 'double');
+
 clear respBz;
 for ish = 1:nsh
     
@@ -30,7 +27,7 @@ for ish = 1:nsh
     
     istims = istims(1:nstims);
     
-    [A, B, C] = svd(fullCOV(istims, istims));
+    [A, B, ~] = svdecon(fullCOV(istims, istims));
     
 	clear cproj
     cproj(:,:,1) = respBz(:,:,1) * (respBz(:,:,1)' * A / diag(sqrt(diag(B))));

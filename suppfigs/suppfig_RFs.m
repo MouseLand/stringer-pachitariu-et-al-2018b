@@ -38,4 +38,4 @@ for i = 1:ncols
     drawnow;
 end
 %%
-print('fig/supp_RFs.pdf','-dpdf','-bestfit');
+print(fullfile(matroot,'supp_RFs.pdf'),'-dpdf','-bestfit');

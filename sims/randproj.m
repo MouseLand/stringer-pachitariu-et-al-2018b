@@ -1,12 +1,13 @@
 np = 2^12;
 theta = linspace(0,2*pi,np);
-nD = 1000; % number of dimensions
+nD = 200000; % number of dimensions
 
 % a random projection w
 rng(3);
 w = randn(3,nD);
 
-alp = [5.0:-.02:1.0];
+alp = [4.0:-.02:2.0];
+%alp = [2.0];
 na = length(alp);
 F(na) = struct('cdata',[],'colormap',[]);
 
@@ -31,7 +32,7 @@ for k = 1:na
 	hold all;
 	plot3(wproj(1,:),wproj(2,:),wproj(3,:),'k','linewidth',1);
 	
-	axis([-3.5 3.2 -3.5 3.2 -3.5 3.2]);
+	axis([-2.5 2.2 -2.5 2.2 -2.5 2.2]);
 	title(sprintf('\\alpha = %1.2f',alp(k)),'fontsize',16)
 	drawnow;
 	F(k)=getframe(gcf);
@@ -41,7 +42,7 @@ end
 
 %%
 v = VideoWriter('fractal.avi');
-v.FrameRate = 15;
+v.FrameRate = 10;
 open(v);
 for k = 1:na
 	v.writeVideo(F(k).cdata);

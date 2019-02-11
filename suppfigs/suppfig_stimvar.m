@@ -32,7 +32,8 @@ axis square
 
 % -------PVALS ---------------------------------------------------------
 col = colormap('parula');
-col = col(round(linspace(1,56, numel(Px{1}))), :);
+col = col(round(linspace(1,60, numel(Px{1}))), :);
+rng(3);
 icol = randperm(numel(Px{1}));
 hs=my_subplot(2,2,2,[.7 .6]);
 hs.Position(2) = hs.Position(2) - .03;
@@ -81,5 +82,5 @@ end
 text(-.2,1.1,'c', 'Fontweight', 'bold', 'Fontangle', 'normal', 'Units', 'normalized', 'verticalAlignment', 'top', 'Fontsize', 12);
 
 %%
-print('fig/supp_stimvar.pdf','-dpdf');
+print(fullfile(matroot,'supp_stimvar.pdf'),'-dpdf');
 

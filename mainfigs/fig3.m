@@ -17,16 +17,17 @@ img{7} = ceil(rand(11,11) - .95) - ceil(rand(11,11) - .95);
 
 
 close all
-xf = 4.5;
-yf = 7;
+xf = 9;
+yf = 4.2;
 HF=default_figure([11 3 xf yf]);
+
+%%
 
 id = [1 2 5 7 3 4 6];
 
 cmap = [.5 .5 .5; 0 0 1; 1 0 1; 0 .5 0];
 
-trange = 10:500;
-trange0 = 25:500;
+trange = 11:500;
 
 clf;
 
@@ -36,31 +37,22 @@ clf;
 %figure('position', [0 0 xf yf])
 
 stimset = {{'original'}, {'whitened','(partially)'},...
-    {'8D images'},{'4D images'}, {'spatially localized'},...
-    {'1D drifting gratings'},{'sparse noise'}};
-xtitles = {{'Example image'}, {'Image'}, {'Neural'}, ...
-    {'Gabor'},{'Alexnet'}};
+    {'8D images'},{'4D images'}, {'spatially','localized'},...
+    {'1D drifting','gratings'},{'sparse noise'}};
+xtitles = {{''}, {'Image spectrum'}, {'Neural spectrum'}, ...
+    {'Gabor spectrum'},{'Alexnet'}};
 
 
 
-dy = .94/(numel(id));
-yh = .76*dy;
-xh = .2;
-
-XPOS = .04 + (xh+.022)*[0:3];
-XPOS(2:end) = XPOS(2:end)+.05;
 clear hs;
-ytitle = 1.24;
+ytitle = 1.2;
 txt = {'x2800', 'x2800', 'x2800', 'x2800', 'x2800', 'x32', 'x3600'};
 clear hs;
 for K = 1:numel(id)
     % ///////////////////////////////////////////////////////////////////
-    if K==1
-        hs{K}=axes('Position', [XPOS(1), .02 + (numel(id)-K)*dy + .02, xh*.95, yh*.95]);
-    else
-        hs{K}=axes('Position', [XPOS(1), .02 + (numel(id)-K)*dy, xh*.95, yh*.95]);
-    end
-    
+    hs{K} = my_subplot(4, 10, K);
+	hs{K}.Position(1) = hs{K}.Position(1) + 0.03;
+	hs{K}.Position(2) = hs{K}.Position(2) - 0.015;
     imagesc(img{id(K)}, [-1 1])
     axis square;
     colormap('gray')
@@ -74,21 +66,15 @@ for K = 1:numel(id)
         text(.6, ytitle+.01, xtitles{1}, 'HorizontalAlignment', 'center',...
             'fontsize',10,'fontangle','normal','verticalalign','bottom');
 		
-		text(3.9, ytitle+.01, 'Eigenspectrum', 'HorizontalAlignment', 'center',...
-            'fontsize',10,'fontangle','normal','verticalalign','bottom');
+		
 	end
     
     % ///////////////////////////////////////////////////////////////////
     for jp = 2:4
-        if K==1
-            axes('Position', [XPOS(jp), .02 + (numel(id)-K)*dy+.02, xh, yh]);
-            
-        else
-            axes('Position', [XPOS(jp), .02 + (numel(id)-K)*dy, xh, yh])
-        end
-        
-        
-        switch jp
+        hp=my_subplot(4, 10, K + (jp-1)*10);
+		hp.Position(1) = hp.Position(1) + 0.03;
+		hp.Position(2) = hp.Position(2) + 0.01*(5-jp);
+		switch jp
             case 2
                 ss = evs{id(K)};
                 ss = ss(:)/sum(ss(:));
@@ -141,7 +127,6 @@ for K = 1:numel(id)
         [p, ypred, b] = get_powerlaw(ss, trange0);
         alp(jp-1, id(K)) = p;
         
-        
         loglog(ss,'color',cmap(jp-1,:));
         hold on
         if jp==3
@@ -157,20 +142,18 @@ for K = 1:numel(id)
         grid minor;
         grid minor;
         box off
-        set(gca, 'xtick', [1 10 100 1000], 'xticklabel',{'1','10','100 ','1000'})
-        set(gca, 'ytick', 10.^[-5:-1])
         
         box off
         if K==1
-			text(.5, ytitle-.05, xtitles{jp}, 'HorizontalAlignment', 'center',...
+			text(.5, ytitle, xtitles{jp}, 'HorizontalAlignment', 'center',...
                 'fontsize',8,'fontangle','normal','color',cmap(jp-1,:));
 		end
 		
-		if jp==2 && K==1
-			set(gca, 'xtick', [1 10 100 1000]);
-			set(gca, 'ytick', 10.^[-5:-1]);
+		if K==1
+			set(gca, 'xtick', [1 10 100 1000]);%,'xticklabel',{'1','10','100','1000'});
+			set(gca, 'ytick', 10.^[-5:2:-1]);
 			ylabel('variance');
-			xlabel('PC dimension');
+			text(0,-.27,'PC dimension', 'fontsize',8);
 		else
 			set(gca, 'xtick', [1 10 100 1000],'xticklabel',{});
 			set(gca, 'ytick', 10.^[-5:-1],'yticklabel',{});
@@ -185,28 +168,96 @@ for K = 1:numel(id)
     end
 end
 
+D = [100*ones(2,1); 8; 4; 100; 1; 100];
+serr = cellfun(@std,aall);
+serr = serr./sqrt(cellfun(@numel,aall)-1);
+ik = [1 2 5 6 3 7 4];
+stimset = {{'original'}, {'whitened (partially)'},...
+    {'8D images'},{'4D images'}, {'spatially localized'},...
+    {'1D drifting gratings'},{'sparse noise'}};
+
+sp = {'o','x','^','v','+','*','.'};
+sps = {'o','x','\Delta','\nabla','+','*','\bullet'};
+ms0 = 6;
+ms = [ms0 ms0 ms0 ms0 ms0 ms0 15];
+hs{K+1} = my_subplot(2,3,3,[.7 .7]);
+hs{K+1}.Position(1) = hs{K+1}.Position(1) + 0.02;
+hs{K+1}.Position(2) = hs{K+1}.Position(2) + 0.01;
+for j = 1:numel(D)
+	for k = 1
+		plot(1+2./D(j),alp(k+1,j),sp{j},'color',cmap(k+1,:),...
+			'markersize',ms(j)); %'MarkerFaceColor',cm(ik(j),:),
+	end
+    hold all;
+end
+text(.18, .18, 'a,b,c,d','color','b','fontsize',8);
+text(.1, .32, 'e','color','b','fontsize',8);
+text(.22, .38, 'f','color','b','fontsize',8);
+text(.56,.85, 'g','color','b','fontsize',8);
+hold all;
+plot([0.5 4.7],[0.5 4.7],'k--');
+%plot([1 4 8], 1 + 2./[1 4 8],'k');
+xlabel({'1 + 2/d','(d=stimulus dimensionality)'});
+ylabel('power law exponent ');
+ht=text(-.23,0.82,'\alpha');
+set(ht,'rotation',90);
+box off;
+axis tight;
+axis([.5 4.7 0.5 4.7]);
+axis square;
+
+hs{K+2} = my_subplot(2,3,6,[.7 .7]);
+hs{K+2}.Position(1) = hs{K+2}.Position(1) + 0.02;
+hs{K+2}.Position(2) = hs{K+2}.Position(2) + 0.01;
+for j = 1:numel(D)
+	for k = 2
+		plot(1+2./D(j),alp(k+1,j),sp{j},'color',cmap(k+1,:),...
+			'markersize',ms(j)); %'MarkerFaceColor',cm(ik(j),:),
+	end
+    hold all;
+end
+text(.17, .32, 'a,b','color',cmap(k+1,:),'fontsize',8);
+text(.17, .38, 'c','color',cmap(k+1,:),'fontsize',8);
+text(.03, .45, 'd','color',cmap(k+1,:),'fontsize',8);
+text(.1,.55, 'e','color',cmap(k+1,:),'fontsize',8);
+text(.22,.63, 'f','color',cmap(k+1,:),'fontsize',8);
+text(.56,1.07, 'g','color',cmap(k+1,:),'fontsize',8);
+hold all;
+plot([0.5 4.7],[0.5 4.7],'k--');
+%plot([1 4 8], 1 + 2./[1 4 8],'k');
+xlabel({'1 + 2/d','(d=stimulus dimensionality)'});
+ylabel('power law exponent');
+ht=text(-.23,0.82,'\alpha');
+set(ht,'rotation',90);
+box off;
+axis tight;
+axis([.5 4.7 0.5 4.7]);
+axis square;
+
 %
 % -------------- LETTERS
-hp=.04;
+hp=.02;
 hy=1.28;
 deffont=10;
 for j = [1:length(hs)]
-    if j==1
-        hp0 = hp;
+    if j==length(hs) || j==length(hs)-1
+        hy0 = 1.1;
+		hp0 = .01;
     else
-        hp0=hp;
+        hy0=hy;
+		hp0=hp;
     end
     hpos = hs{j}.Position;
-    axes('position', [hpos(1)-hp0 hpos(2)+hpos(4)*hy(1) .01 .01]);
+    axes('position', [hpos(1)-hp0 hpos(2)+hpos(4)*hy0(1) .01 .01]);
     text(0,0, char(96+j),'fontsize',12,'fontweight','bold','fontangle','normal');
     axis([0 1 0 1]);
     axis off;
 end
 
-save(fullfile(matroot, 'alphas.mat'),'alp','aall');
+%save(fullfile(matroot, 'alphas.mat'),'alp','aall');
 
-%%
-print('fig/fig3.pdf','-dpdf');
+%
+print(fullfile(matroot,'fig3.pdf'),'-dpdf');
 
 
 

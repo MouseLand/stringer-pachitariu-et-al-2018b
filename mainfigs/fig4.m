@@ -2,66 +2,26 @@ function fig4(matroot)
 
 load(fullfile(matroot,'scalefree.mat'));
 alpsim = alp;
-load(fullfile(matroot,'alphas'));
 
 %%
 close all;
-HF=default_figure([1 1 4.5 7]);
+HF=default_figure([1 1 9 3.8]);
 
 %%
 deffont = 8;
 clf;
 clear hs;
-hs{1}=my_subplot(6,1,1,[.3 .9]);
-hs{1}.Position(2) = hs{1}.Position(2) - .01;
-hs{1}.Position(1) = hs{1}.Position(1) - .12;
-% plot of alphas
-D = [100*ones(2,1); 8; 4; 100; 1; 100];
-serr = cellfun(@std,aall);
-serr = serr./sqrt(cellfun(@numel,aall)-1);
-cm = colormap('winter');
-cm = cm(round(linspace(1,64,7)),:);
-ik = [1 2 5 6 3 7 4];
-stimset = {{'original'}, {'whitened (partially)'},...
-    {'8D images'},{'4D images'}, {'spatially localized'},...
-    {'1D drifting gratings'},{'sparse noise'}};
-
-for j = 1:numel(D)
-    plot(1+2./D(j),nanmean(aall{j}),'o','color',cm(ik(j),:),...
-        'markersize',4); %'MarkerFaceColor',cm(ik(j),:),
-    hold all;
-    text(1.1,(ik(j))*.15,stimset{j},'color',cm(ik(j),:),'fontsize', 10);
-end
-for j = 1:numel(D)
-    plot(1+2./D(j),alp(3,j),'x','color',cm(ik(j),:),...
-        'markersize',6);
-end
-
-hold all;
-plot([1:3.1],[1:3.1],'k--');
-%plot([1 4 8], 1 + 2./[1 4 8],'k');
-xlabel('1 + 2/d (d=stimulus dimensionality)');
-ylabel('power law exponent \alpha');
-box off;
-axis tight;
-ylim([.85 4.7]);
-text(-.8,1,'o Neural \alpha');
-text(-.8,.8,'x Gabor \alpha');
-
 
 cm = colormap('jet');
 cs = cm(round(exp(linspace(log(1),log(64),100))),:); 
 cs = cs(end:-1:1,:);
 cm = cm(round((linspace(1,64,15))),:);
 cm = cm(end:-1:1,:);
-    
+   
+dx=.03;
 for k = 1:5
-    hs{k+1}=my_subplot(7,3,1+(k+1)*3);
-    if k==1
-        hs{k+1}.Position(2) = hs{k+1}.Position(2)+.03;
-    else
-        hs{k+1}.Position(2) = hs{k+1}.Position(2)-.01;
-    end
+    hs{k}=my_subplot(3,5,+k);
+	hs{k}.Position(1) = hs{k}.Position(1)+dx*(5-k);
     
     hold all;
     if k>2
@@ -86,14 +46,13 @@ for k = 1:5
     end
     axis square;
     if k==1
-        text(-.2,1.5,'Simulations','fontsize',10,'fontweight','normal');
+        text(-1.5,.7,{'Tuning curves','(simulations)'},'fontsize',10,'fontweight','normal');
     end
     
     s = spec{k};
-    hp=my_subplot(7,3,2+(k+1)*3);
-    if k==1
-        hp.Position(2) = hp.Position(2)+.03;
-    end
+    hp=my_subplot(3,5,k+5);
+	hp.Position(1) = hp.Position(1)+dx*(5-k);
+    hp.Position(2) = hp.Position(2)+0.03;
     
     loglog(s(1:end-1)/sum(s(1:end-1)),'k');
     hold all;
@@ -124,15 +83,15 @@ for k = 1:5
     end
     axis square;
     if k==1
-        text(-.2,1.5,'Eigenspectrum','fontsize',10,'fontweight','normal');
+        text(-1.5,.7,{'Eigen-','spectrum'},'fontsize',10,'fontweight','normal');
     end
     
     wproj = exproj{k};
     np = size(wproj,2);
-    hp=my_subplot(7,3,3+(k+1)*3,[.75 .75]);
-    if k==1
-        hp.Position(2) = hp.Position(2)+.03;
-    end
+    hp=my_subplot(3,5,k+10,[.9 .9]);
+	hp.Position(1) = hp.Position(1)+dx*(5-k);
+	hp.Position(2) = hp.Position(2)+0.01;
+    
     
     plot3(wproj(1,1:2:end),wproj(2,1:2:end),zeros(1,ceil(np/2)),'color',.7*[1 1 1],'linewidth',.25);
     hold all;
@@ -140,29 +99,28 @@ for k = 1:5
     grid on;
     axis tight;
     if k==1
-        text(-.2,1.45,'3D projection','fontsize',10,'fontweight','normal');
+        text(-1.2,.7,{'Random','projection'},'fontsize',10,'fontweight','normal');
     end
     set(gca,'fontsize',deffont);
     axis square;
     
 end
 
-%%
 
 for j = 1:length(hs)
     axes(hs{j});
-    if j==1
+    if j==11
         jy = 1.13 ;
         jx = -1.;        
     else
-        jy = 1.3;
-        jx = -.5;
+        jy = 1.18;
+        jx = -.28;
     end
     text(jx,jy,char(96+j),'units','normalized','fontsize',12,'fontweight','bold','fontangle','normal');
 end
 
 %%
-print('fig/fig4.pdf','-dpdf');
+print(fullfile(matroot,'fig4.pdf'),'-dpdf');
 
 
 

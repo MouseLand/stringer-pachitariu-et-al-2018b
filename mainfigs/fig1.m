@@ -13,6 +13,7 @@ gb = load(fullfile(matroot,'gabor_fits.mat'));
 %% dataset colors
 col = colormap('parula');
 col = col(round(linspace(1,60, size(pCorrect,2))), :);
+rng(3);
 icol = randperm(size(pCorrect,2));
 
 %% choose example dataset and compute RFs for plot
@@ -302,4 +303,4 @@ for j = 1:length(hs)
 	
 end
 
-print('fig/fig1.pdf','-dpdf');
+print(fullfile(matroot,'fig1.pdf'),'-dpdf');
