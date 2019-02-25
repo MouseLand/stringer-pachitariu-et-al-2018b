@@ -43,3 +43,8 @@ suppfig_gabors(matroot);
 % script works because I've added the processed powerlaws to the repository
 % (raw data not yet online, sorry!)
 suppfig_ephys_powerlaw(matroot);
+
+%% make sorted 2D figure
+% add path to rastermap
+addpath('/media/carsen/DATA2/Github/rastermap/matlab')
+suppfig_sort2d(matroot);
