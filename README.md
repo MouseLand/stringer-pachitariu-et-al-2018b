@@ -90,9 +90,8 @@ plt.imshow(imgs[:,:,0])
 The stimuli in the present study is composed of natural images from several several natural categories; their class assignment was not used at all in the analysis.
 
 However, manually labeled class assignment is avaialable in the `classes` folder:
-# `claeeses/stimuli_class_assignment.mat` contains categorization of the stimuli into 15 classes ('birds', 'cats', 'flowers', 'hamsters', 'holes', 'insects', 'mice', 'mushrooms', 'nests', 'pellets', 'snakes', 'wildcats', 'other animals', 'other natural', 'other man made') and an additional 'unknown' class.
-# `claeeses/stimuli_class_assignment_confident.mat` contains categorization of the stimuli into 11 classes ('birds', 'cats', 'flowers', 'hamsters', 'holes', 'insects', 'mice', 'mushrooms', 'nests', 'pellets', 'snakes') where the 
-'wildcats' class was merged into 'cats' and 'other animals', 'other natural', 'other man made' are considered 'unknown'.
+* `claeeses/stimuli_class_assignment.mat` contains categorization of the stimuli into 15 classes ('birds', 'cats', 'flowers', 'hamsters', 'holes', 'insects', 'mice', 'mushrooms', 'nests', 'pellets', 'snakes', 'wildcats', 'other animals', 'other natural', 'other man made') and an additional 'unknown' class.
+* `claeeses/stimuli_class_assignment_confident.mat` contains categorization of the stimuli into 11 classes ('birds', 'cats', 'flowers', 'hamsters', 'holes', 'insects', 'mice', 'mushrooms', 'nests', 'pellets', 'snakes') where the  'wildcats' class was merged into 'cats' and 'other animals', 'other natural', 'other man made' are considered 'unknown'.
 
 Both `mat` files contains:
 * a `class_assignment` variable which is a vector of length 2800 with the corresponding class id;
