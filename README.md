@@ -64,6 +64,9 @@ Extra: **sparseStats.mat** are the powerlaws from sparse noise recordings; **all
 
 
 ### How to load the data into python
+
+See also notebook [powerlaws.ipynb](python/powerlaws.ipynb).
+
 ```
 import scipy.io as sio
 mt = sio.loadmat('natimg2800_M160825_MP027_2016-12-14.mat')
