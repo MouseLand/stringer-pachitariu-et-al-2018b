@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.sparse.linalg import eigsh
+from sklearn.decomposition import PCA
 
 def get_powerlaw(ss, trange):
     ''' fit exponent to variance curve'''
@@ -17,30 +18,26 @@ def get_powerlaw(ss, trange):
     alpha = b[0]
     return alpha,ypred
 
-def cvPCA(sresp0, nshuff=5):
-    ss = np.zeros((sresp0.shape[1],))
-    NN = sresp0.shape[-1]
-    nstims = sresp0.shape[1]
-    fullCOV = np.reshape(sresp0, (-1, NN)) @ np.reshape(sresp0, (-1, NN)).T
-    for n in range(nshuff):
-        if n == 0:
-            inr = np.zeros((nstims,), np.bool)
-        else:
-            inr = np.random.rand(nstims) < 0.5
-        sresp = sresp0.copy()
-        sresp[np.ix_([0,1], inr.nonzero()[0])] = sresp0[np.ix_([1,0], inr.nonzero()[0])]
-        istims1 = np.inf * np.ones((nstims,))
-        istims1[~inr] = (~inr).nonzero()[0]
-        istims1[~inr] = (~inr).nonzero()[0]
-        istims2 = np.inf * np.ones((nstims,))
-        istims2[inr] = (inr).nonzero()[0]
-        istims2[inr] = (inr).nonzero()[0]
-        istims = np.argsort(np.concatenate((istims1,istims2), axis=0))
-        istims = istims[:nstims]
-        sv,u = eigsh(fullCOV[np.ix_(istims, istims)], k=min(1024,sresp.shape[1]))
-        u = u[:,::-1]
-        sv = sv[::-1]
-        cproj0 = sresp[0] @ (sresp[0].T @ u / sv**0.5)
-        cproj1 = sresp[1] @ (sresp[0].T @ u / sv**0.5)
-        ss += (cproj0 * cproj1).sum(axis=0)
+def shuff_cvPCA(X, nshuff=5):
+    ''' X is 2 x stimuli x neurons '''
+    nc = min(1024, X.shape[1])
+    ss=np.zeros((nshuff,nc))
+    for k in range(nshuff):
+        iflip = np.random.rand(X.shape[1]) > 0.5
+        X0 = X.copy()
+        X0[0,iflip] = X[1,iflip]
+        X0[1,iflip] = X[0,iflip]
+        ss[k]=cvPCA(X0)
+    return ss
+
+def cvPCA(X):
+    ''' X is 2 x stimuli x neurons '''
+    pca = PCA(n_components=min(1024, X.shape[1])).fit(X[0].T)
+    u = pca.components_.T
+    sv = pca.singular_values_
+    
+    xproj = X[0].T @ (u / sv)
+    cproj0 = X[0] @ xproj
+    cproj1 = X[1] @ xproj
+    ss = (cproj0 * cproj1).sum(axis=0)
     return ss
