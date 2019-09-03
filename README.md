@@ -64,6 +64,9 @@ Extra: **sparseStats.mat** are the powerlaws from sparse noise recordings; **all
 
 
 ### How to load the data into python
+
+See also notebook [powerlaws.ipynb](python/powerlaws.ipynb).
+
 ```
 import scipy.io as sio
 mt = sio.loadmat('natimg2800_M160825_MP027_2016-12-14.mat')
@@ -85,3 +88,16 @@ imgs = mt['imgs']  # 68 by 270 by number of images
 plt.imshow(imgs[:,:,0])
 
 ```
+
+### Class assignment
+The stimuli in the present study is composed of natural images from several several natural categories; their class assignment was not used at all in the analysis.
+
+However, manually labeled class assignment is avaialable in the `classes` folder:
+* `claeeses/stimuli_class_assignment.mat` contains categorization of the stimuli into 15 classes ('birds', 'cats', 'flowers', 'hamsters', 'holes', 'insects', 'mice', 'mushrooms', 'nests', 'pellets', 'snakes', 'wildcats', 'other animals', 'other natural', 'other man made') and an additional 'unknown' class.
+* `claeeses/stimuli_class_assignment_confident.mat` contains categorization of the stimuli into 11 classes ('birds', 'cats', 'flowers', 'hamsters', 'holes', 'insects', 'mice', 'mushrooms', 'nests', 'pellets', 'snakes') where the  'wildcats' class was merged into 'cats' and 'other animals', 'other natural', 'other man made' are considered 'unknown'.
+
+Both `mat` files contains:
+* a `class_assignment` variable which is a vector of length 2800 with the corresponding class id;
+* a `class_names` variable with the corresponding class names (zero-based, so that the first entry is 'unknown' which correspond to id=0, the second is 'birds' and correspond to id=1, etc.).
+
+A matlab GUI application used to perform the classification is also provided in `classes/class_verify`. It is provided here just for referrence and is not further documented.
